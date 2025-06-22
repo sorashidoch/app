@@ -1,0 +1,70 @@
+{
+  "name": "sumahono-mobile",
+  "version": "1.0.0",
+  "description": "かわいい系のシンプルなモバイルアプリ",
+  "main": "lib/main.dart",
+  "scripts": {
+    "setup": "flutter pub get",
+    "dev": "flutter run",
+    "dev:android": "flutter run -d android",
+    "dev:ios": "flutter run -d ios",
+    "dev:web": "flutter run -d chrome",
+    "build:android": "flutter build apk",
+    "build:ios": "flutter build ios",
+    "build:web": "flutter build web",
+    "test": "flutter test",
+    "test:coverage": "flutter test --coverage",
+    "clean": "flutter clean",
+    "format": "dart format .",
+    "analyze": "flutter analyze",
+    "doctor": "flutter doctor",
+    "upgrade": "flutter upgrade",
+    "pub:get": "flutter pub get",
+    "pub:upgrade": "flutter pub upgrade",
+    "pub:outdated": "flutter pub outdated",
+    "create:feature": "node scripts/create-feature.js",
+    "create:widget": "node scripts/create-widget.js",
+    "create:screen": "node scripts/create-screen.js"
+  },
+  "keywords": [
+    "flutter",
+    "dart",
+    "mobile",
+    "app",
+    "kawaii",
+    "cute",
+    "simple"
+  ],
+  "author": "すまほのもばいる開発チーム",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/sumahono-mobile.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/sumahono-mobile/issues"
+  },
+  "homepage": "https://github.com/your-username/sumahono-mobile#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^17.0.0",
+    "@commitlint/config-conventional": "^17.0.0",
+    "husky": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "config": {
+    "flutter_version": ">=3.16.0",
+    "dart_version": ">=3.2.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "flutter format . && flutter analyze",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "commitlint": {
+    "extends": ["@commitlint/config-conventional"]
+  }
+} 
