@@ -63,13 +63,5 @@ flutter:
     - assets/animations/
     - assets/icons/
   
-  # フォント設定
-  fonts:
-    - family: KawaiiFont
-      fonts:
-        - asset: assets/fonts/KawaiiFont-Regular.ttf
-        - asset: assets/fonts/KawaiiFont-Bold.ttf
-          weight: 700
-  
   # プラットフォーム固有の設定
   uses-material-design: true 

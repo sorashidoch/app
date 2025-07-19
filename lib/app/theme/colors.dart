@@ -24,6 +24,12 @@ class AppColors {
   static const Color textPrimary = Color(0xFF2C3E50);
   static const Color textSecondary = Color(0xFF7F8C8D);
   
+  // 状態色
+  static const Color success = Color(0xFF4CAF50);    // 成功（緑）
+  static const Color error = Color(0xFFF44336);      // エラー（赤）
+  static const Color warning = Color(0xFFFF9800);    // 警告（オレンジ）
+  static const Color info = Color(0xFF2196F3);       // 情報（青）
+  
   // グラデーション
   static const LinearGradient primaryGradient = LinearGradient(
     colors: [pastelPink, pastelBlue],
