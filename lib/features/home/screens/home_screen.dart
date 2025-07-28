@@ -25,29 +25,50 @@ class HomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // アプリタイトル
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'きょうごはん',
-                          style: AppTextStyles.kawaiiLarge.copyWith(
-                            color: Colors.white,
-                            shadows: [
-                              Shadow(
-                                color: Colors.black.withOpacity(0.2),
-                                offset: const Offset(0, 2),
-                                blurRadius: 4,
-                              ),
-                            ],
-                          ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xFFFF6B9D),
+                            Color(0xFFFF8E53),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
-                        Text(
-                          'かわいい系アプリ',
-                          style: AppTextStyles.caption.copyWith(
-                            color: Colors.white.withOpacity(0.9),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'きょうごはん',
+                            style: AppTextStyles.kawaiiLarge.copyWith(
+                              color: Colors.white,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  offset: const Offset(0, 2),
+                                  blurRadius: 4,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            '今日のご飯に迷った時のお手伝い',
+                            style: AppTextStyles.caption.copyWith(
+                              color: Colors.white.withOpacity(0.9),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     // 設定ボタン
                     IconButton(
@@ -83,12 +104,7 @@ class HomeScreen extends StatelessWidget {
                             padding: const EdgeInsets.all(20.0),
                             child: Column(
                               children: [
-                                const Icon(
-                                  Icons.favorite,
-                                  color: AppColors.primary,
-                                  size: 48,
-                                ),
-                                const SizedBox(height: 16),
+                                const SizedBox(height: 8),
                                 Text(
                                   'ようこそ！',
                                   style: AppTextStyles.heading2.copyWith(
@@ -97,7 +113,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
-                                  'かわいいアプリで楽しい時間を過ごしましょう ✨',
+                                  'きょうのごはんをきめましょう ✨',
                                   style: AppTextStyles.body,
                                   textAlign: TextAlign.center,
                                 ),
@@ -106,7 +122,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 16),
                         
                         // 機能ボタン
                         Expanded(
