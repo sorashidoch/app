@@ -6,6 +6,7 @@ import '../shared/services/app_state.dart';
 import '../features/home/screens/home_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../features/settings/screens/settings_screen.dart';
+import '../features/memo/screens/memo_screen.dart';
 
 class SumahonoMobileApp extends StatelessWidget {
   const SumahonoMobileApp({super.key});
@@ -42,6 +43,10 @@ class SumahonoMobileApp extends StatelessWidget {
       GoRoute(
         path: '/settings',
         builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        path: '/memo',
+        builder: (context, state) => const MemoScreen(),
       ),
     ],
   );
