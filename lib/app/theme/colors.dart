@@ -11,7 +11,7 @@ class AppColors {
   static const Color pastelRed = Color(0xFFFF8A80);     // 赤
   static const Color pastelYellow = Color(0xFFFFFACD);  // 黄色
   static const Color pastelGreen = Color(0xFF98FB98);   // 緑
-  static const Color pastelBlue = Color(0xFFB3E5FC);    // 青
+  static const Color pastelBlue = Color(0xFFFFCC80);    // オレンジ
   static const Color pastelPurple = Color(0xFFE1BEE7);  // 紫
   static const Color pastelOrange = Color(0xFFFFCC80);  // オレンジ
   static const Color pastelMint = Color(0xFF98FF98);    // ミント

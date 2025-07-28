@@ -132,7 +132,7 @@ class HomeScreen extends StatelessWidget {
                             mainAxisSpacing: 16,
                             children: [
                               FeatureButton(
-                                icon: Icons.rotate_right,
+                                icon: Icons.gps_fixed,
                                 title: 'ごはんルーレット',
                                 color: AppColors.pastelPink,
                                 onTap: () => context.go('/profile'),
