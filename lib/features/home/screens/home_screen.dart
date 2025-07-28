@@ -96,43 +96,40 @@ class HomeScreen extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      children: [
-                        // ウェルカムカード
-                        KawaiiCard(
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 8),
-                                Text(
-                                  'ようこそ！',
-                                  style: AppTextStyles.heading2.copyWith(
-                                    color: AppColors.primary,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          // ウェルカムカード
+                          KawaiiCard(
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: 8),
+                                
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'きょうのごはんをきめましょう✨',
+                                    style: AppTextStyles.body,
+                                    textAlign: TextAlign.center,
                                   ),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  'きょうのごはんをきめましょう ✨',
-                                  style: AppTextStyles.body,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        
-                        const SizedBox(height: 16),
-                        
-                        // 機能ボタン
-                        Expanded(
-                          child: GridView.count(
+                          
+                          const SizedBox(height: 16),
+                          
+                          // 機能ボタン
+                          GridView.count(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
                             crossAxisCount: 2,
                             crossAxisSpacing: 16,
                             mainAxisSpacing: 16,
                             children: [
                               FeatureButton(
-                                icon: Icons.person,
+                                icon: Icons.casino,
                                 title: 'ごはんルーレット',
                                 color: AppColors.pastelPink,
                                 onTap: () => context.go('/profile'),
@@ -163,8 +160,8 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
