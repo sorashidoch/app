@@ -41,7 +41,7 @@ class SettingsScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'きょうごはきょうきょうごはんごはんん',
+                            'きょうごはん',
                             style: AppTextStyles.heading2.copyWith(
                               color: AppColors.primary,
                             ),

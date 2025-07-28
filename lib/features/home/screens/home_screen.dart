@@ -109,7 +109,7 @@ class HomeScreen extends StatelessWidget {
                                 
                                   const SizedBox(height: 8),
                                                                   Text(
-                                  'きょうのごはんをきめましょう✨',
+                              'きょうのごはんをきめましょう✨',
                                   style: AppTextStyles.body.copyWith(
                                     fontSize: 14,
                                     height: 1.2,
