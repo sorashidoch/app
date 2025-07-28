@@ -117,7 +117,7 @@ class HomeScreen extends StatelessWidget {
                             children: [
                               FeatureButton(
                                 icon: Icons.person,
-                                title: 'プロフィール',
+                                title: 'ごはんルーレット',
                                 color: AppColors.pastelPink,
                                 onTap: () => context.go('/profile'),
                               ),
