@@ -105,14 +105,17 @@ class HomeScreen extends StatelessWidget {
                               padding: const EdgeInsets.all(20.0),
                               child: Column(
                                 children: [
-                                  const SizedBox(height: 8),
+                                 
                                 
                                   const SizedBox(height: 8),
-                                  Text(
-                                    'きょうのごはんをきめましょう✨',
-                                    style: AppTextStyles.body,
-                                    textAlign: TextAlign.center,
+                                                                  Text(
+                                  'きょうのごはんをきめましょう✨',
+                                  style: AppTextStyles.body.copyWith(
+                                    fontSize: 14,
+                                    height: 1.2,
                                   ),
+                                  textAlign: TextAlign.left,
+                                ),
                                 ],
                               ),
                             ),
@@ -129,7 +132,7 @@ class HomeScreen extends StatelessWidget {
                             mainAxisSpacing: 16,
                             children: [
                               FeatureButton(
-                                icon: Icons.casino,
+                                icon: Icons.rotate_right,
                                 title: 'ごはんルーレット',
                                 color: AppColors.pastelPink,
                                 onTap: () => context.go('/profile'),
@@ -137,7 +140,7 @@ class HomeScreen extends StatelessWidget {
                               FeatureButton(
                                 icon: Icons.favorite_border,
                                 title: 'お気に入り',
-                                color: AppColors.pastelBlue,
+                                color: AppColors.pastelRed,
                                 onTap: () {
                                   // TODO: お気に入り機能を実装
                                 },
@@ -145,17 +148,17 @@ class HomeScreen extends StatelessWidget {
                               FeatureButton(
                                 icon: Icons.note,
                                 title: 'メモ帳',
-                                color: AppColors.pastelYellow,
+                                color: AppColors.pastelBlue,
                                 onTap: () {
                                   // TODO: メモ帳機能を実装
                                 },
                               ),
                               FeatureButton(
-                                icon: Icons.photo_library,
-                                title: 'ギャラリー',
-                                color: AppColors.pastelGreen,
+                                icon: Icons.history,
+                                title: '履歴',
+                                color: AppColors.pastelPurple,
                                 onTap: () {
-                                  // TODO: ギャラリー機能を実装
+                                  // TODO: 履歴機能を実装
                                 },
                               ),
                             ],

@@ -7,14 +7,15 @@ class AppColors {
   static const Color accent = Color(0xFFFFD700);     // ゴールド
   
   // パステルカラー
-  static const Color pastelPink = Color(0xFFF4A261);    // くすみオレンジ
-  static const Color pastelBlue = Color(0xFFF4A261);    // くすみオレンジ
-  static const Color pastelYellow = Color(0xFFFFFACD);
-  static const Color pastelGreen = Color(0xFF98FB98);
-  static const Color pastelPurple = Color(0xFFE6E6FA);
-  static const Color pastelOrange = Color(0xFFF4A261);  // くすみオレンジ
-  static const Color pastelMint = Color(0xFF98FF98);
-  static const Color pastelLavender = Color(0xFFE6E6FA);
+  static const Color pastelPink = Color(0xFFFFB3BA);    // ピンク
+  static const Color pastelRed = Color(0xFFFF8A80);     // 赤
+  static const Color pastelYellow = Color(0xFFFFFACD);  // 黄色
+  static const Color pastelGreen = Color(0xFF98FB98);   // 緑
+  static const Color pastelBlue = Color(0xFFB3E5FC);    // 青
+  static const Color pastelPurple = Color(0xFFE1BEE7);  // 紫
+  static const Color pastelOrange = Color(0xFFFFCC80);  // オレンジ
+  static const Color pastelMint = Color(0xFF98FF98);    // ミント
+  static const Color pastelLavender = Color(0xFFE6E6FA); // ラベンダー
   
   // 背景色
   static const Color background = Color(0xFFFEFEFE);
