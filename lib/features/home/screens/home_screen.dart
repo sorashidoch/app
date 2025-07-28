@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'すまほのもばいる',
+                          'きょうごはん',
                           style: AppTextStyles.kawaiiLarge.copyWith(
                             color: Colors.white,
                             shadows: [

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // メインカラー
-  static const Color primary = Color(0xFFFFB6C1);    // ライトピンク
-  static const Color secondary = Color(0xFF87CEEB);  // スカイブルー
+  // メインカラー（くすみオレンジ）
+  static const Color primary = Color(0xFFF4A261);    // くすみオレンジ
+  static const Color secondary = Color(0xFFF4A261);  // くすみオレンジ
   static const Color accent = Color(0xFFFFD700);     // ゴールド
   
   // パステルカラー
-  static const Color pastelPink = Color(0xFFFFC0CB);
-  static const Color pastelBlue = Color(0xFFADD8E6);
+  static const Color pastelPink = Color(0xFFF4A261);    // くすみオレンジ
+  static const Color pastelBlue = Color(0xFFF4A261);    // くすみオレンジ
   static const Color pastelYellow = Color(0xFFFFFACD);
   static const Color pastelGreen = Color(0xFF98FB98);
   static const Color pastelPurple = Color(0xFFE6E6FA);
-  static const Color pastelOrange = Color(0xFFFFB347);
+  static const Color pastelOrange = Color(0xFFF4A261);  // くすみオレンジ
   static const Color pastelMint = Color(0xFF98FF98);
   static const Color pastelLavender = Color(0xFFE6E6FA);
   
@@ -28,11 +28,11 @@ class AppColors {
   static const Color success = Color(0xFF4CAF50);    // 成功（緑）
   static const Color error = Color(0xFFF44336);      // エラー（赤）
   static const Color warning = Color(0xFFFF9800);    // 警告（オレンジ）
-  static const Color info = Color(0xFF2196F3);       // 情報（青）
+  static const Color info = Color(0xFFF4A261);       // くすみオレンジ
   
   // グラデーション
   static const LinearGradient primaryGradient = LinearGradient(
-    colors: [pastelPink, pastelBlue],
+    colors: [pastelPink, pastelBlue], // どちらもくすみオレンジ
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
