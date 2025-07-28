@@ -49,4 +49,4 @@ class KawaiiCard extends StatelessWidget {
       ),
     );
   }
-} 
+}

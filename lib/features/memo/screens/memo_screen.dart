@@ -25,7 +25,8 @@ class _MemoScreenState extends State<MemoScreen> {
   }
 
   void _addMemo() {
-    if (_titleController.text.isNotEmpty && _contentController.text.isNotEmpty) {
+    if (_titleController.text.isNotEmpty &&
+        _contentController.text.isNotEmpty) {
       setState(() {
         _memos.add(MemoItem(
           title: _titleController.text,
@@ -101,7 +102,7 @@ class _MemoScreenState extends State<MemoScreen> {
                   ],
                 ),
               ),
-              
+
               // メインコンテンツ
               Expanded(
                 child: Container(
@@ -165,12 +166,14 @@ class _MemoScreenState extends State<MemoScreen> {
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: AppColors.primary,
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(12),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
                                             ),
                                           ),
                                           child: const Text(
                                             '保存',
-                                            style: TextStyle(color: Colors.white),
+                                            style:
+                                                TextStyle(color: Colors.white),
                                           ),
                                         ),
                                       ),
@@ -187,12 +190,14 @@ class _MemoScreenState extends State<MemoScreen> {
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: Colors.grey,
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(12),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
                                             ),
                                           ),
                                           child: const Text(
                                             'キャンセル',
-                                            style: TextStyle(color: Colors.white),
+                                            style:
+                                                TextStyle(color: Colors.white),
                                           ),
                                         ),
                                       ),
@@ -202,9 +207,9 @@ class _MemoScreenState extends State<MemoScreen> {
                               ),
                             ),
                           ),
-                        
+
                         if (_isAddingMemo) const SizedBox(height: 16),
-                        
+
                         // メモ一覧
                         Expanded(
                           child: _memos.isEmpty
@@ -239,26 +244,32 @@ class _MemoScreenState extends State<MemoScreen> {
                                   itemBuilder: (context, index) {
                                     final memo = _memos[index];
                                     return Padding(
-                                      padding: const EdgeInsets.only(bottom: 12),
+                                      padding:
+                                          const EdgeInsets.only(bottom: 12),
                                       child: KawaiiCard(
                                         child: Padding(
                                           padding: const EdgeInsets.all(16),
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
                                                   Expanded(
-                                                                                                         child: Text(
-                                                       memo.title,
-                                                       style: AppTextStyles.heading3.copyWith(
-                                                         fontSize: 16,
-                                                         color: AppColors.primary,
-                                                       ),
-                                                     ),
+                                                    child: Text(
+                                                      memo.title,
+                                                      style: AppTextStyles
+                                                          .heading3
+                                                          .copyWith(
+                                                        fontSize: 16,
+                                                        color:
+                                                            AppColors.primary,
+                                                      ),
+                                                    ),
                                                   ),
                                                   IconButton(
-                                                    onPressed: () => _deleteMemo(index),
+                                                    onPressed: () =>
+                                                        _deleteMemo(index),
                                                     icon: const Icon(
                                                       Icons.delete,
                                                       color: Colors.red,
@@ -275,7 +286,8 @@ class _MemoScreenState extends State<MemoScreen> {
                                               const SizedBox(height: 8),
                                               Text(
                                                 '${memo.timestamp.year}/${memo.timestamp.month.toString().padLeft(2, '0')}/${memo.timestamp.day.toString().padLeft(2, '0')} ${memo.timestamp.hour.toString().padLeft(2, '0')}:${memo.timestamp.minute.toString().padLeft(2, '0')}',
-                                                style: AppTextStyles.caption.copyWith(
+                                                style: AppTextStyles.caption
+                                                    .copyWith(
                                                   color: Colors.grey[600],
                                                 ),
                                               ),
@@ -310,4 +322,4 @@ class MemoItem {
     required this.content,
     required this.timestamp,
   });
-} 
+}

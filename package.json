@@ -16,6 +16,8 @@
     "test:coverage": "flutter test --coverage",
     "clean": "flutter clean",
     "format": "dart format .",
+    "format:prettier": "prettier --write . && dart format .",
+    "format:check": "prettier --check .",
     "analyze": "flutter analyze",
     "doctor": "flutter doctor",
     "upgrade": "flutter upgrade",
@@ -26,15 +28,7 @@
     "create:widget": "node scripts/create-widget.js",
     "create:screen": "node scripts/create-screen.js"
   },
-  "keywords": [
-    "flutter",
-    "dart",
-    "mobile",
-    "app",
-    "kawaii",
-    "cute",
-    "simple"
-  ],
+  "keywords": ["flutter", "dart", "mobile", "app", "kawaii", "cute", "simple"],
   "author": "すまほのもばいる開発チーム",
   "license": "MIT",
   "repository": {
@@ -48,7 +42,8 @@
   "devDependencies": {
     "@commitlint/cli": "^17.0.0",
     "@commitlint/config-conventional": "^17.0.0",
-    "husky": "^8.0.0"
+    "husky": "^8.0.0",
+    "prettier": "^3.0.0"
   },
   "engines": {
     "node": ">=16.0.0",
@@ -60,11 +55,11 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "flutter format . && flutter analyze",
+      "pre-commit": "dart format . && prettier --write . && flutter analyze",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "commitlint": {
     "extends": ["@commitlint/config-conventional"]
   }
-} 
+}

@@ -50,4 +50,4 @@ class SumahonoMobileApp extends StatelessWidget {
       ),
     ],
   );
-} 
+}

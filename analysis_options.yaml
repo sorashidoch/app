@@ -28,7 +28,7 @@ linter:
     prefer_const_declarations: true
     prefer_final_fields: true
     prefer_final_locals: true
-    
+
     # 命名規則
     camel_case_types: true
     camel_case_extensions: true
@@ -37,7 +37,7 @@ linter:
     non_constant_identifier_names: true
     package_names: true
     type_annotate_public_apis: true
-    
+
     # 不要なコードの削除
     avoid_empty_else: true
     avoid_print: true
@@ -70,7 +70,7 @@ linter:
     unrelated_type_equality_checks: true
     use_rethrow_when_possible: true
     valid_regexps: true
-    
+
     # パフォーマンス関連
     avoid_relative_lib_imports: true
     avoid_slow_async_io: true
@@ -96,14 +96,14 @@ linter:
     use_string_buffers: true
     use_test_throws_matchers: true
     use_to_and_as_if_applicable: true
-    
+
     # セキュリティ関連
     no_leading_underscores_for_library_prefixes: true
     no_leading_underscores_for_local_identifiers: true
-    
+
     # 日本語プロジェクト特有の設定
     # 日本語コメントを許可するため、一部のルールを無効化
-    directives_ordering: false  # 日本語コメントがある場合の順序問題を回避
+    directives_ordering: false # 日本語コメントがある場合の順序問題を回避
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

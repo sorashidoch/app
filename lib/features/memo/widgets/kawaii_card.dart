@@ -35,4 +35,4 @@ class KawaiiCard extends StatelessWidget {
       child: child,
     );
   }
-} 
+}

@@ -104,7 +104,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onPressed: isSpinning ? null : spinRoulette,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
-                      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 32, vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24),
                       ),
@@ -119,10 +120,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Wrap(
                     alignment: WrapAlignment.center,
                     spacing: 12,
-                    children: menus.map((menu) => Chip(
-                      label: Text(menu, style: AppTextStyles.bodySmall),
-                      backgroundColor: AppColors.pastelYellow,
-                    )).toList(),
+                    children: menus
+                        .map((menu) => Chip(
+                              label: Text(menu, style: AppTextStyles.bodySmall),
+                              backgroundColor: AppColors.pastelYellow,
+                            ))
+                        .toList(),
                   ),
                 ],
               ),
@@ -132,4 +135,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-} 
+}

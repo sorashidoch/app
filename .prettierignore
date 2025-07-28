@@ -1,0 +1,66 @@
+# Flutter関連
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+coverage/
+*.lock
+*.dart
+
+# 依存関係
+node_modules/
+.pnpm-store/
+
+# 生成されたファイル
+*.g.dart
+*.freezed.dart
+*.mocks.dart
+
+# アセット
+assets/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.ico
+*.mp4
+*.mp3
+*.wav
+
+# 設定ファイル
+pubspec.lock
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# IDE設定
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS生成ファイル
+.DS_Store
+Thumbs.db
+
+# ログファイル
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 環境変数
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# その他
+*.tmp
+*.temp 

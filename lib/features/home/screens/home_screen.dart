@@ -26,7 +26,8 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     // アプリタイトル
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
                           colors: [
@@ -82,7 +83,7 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               // メインコンテンツ
               Expanded(
                 child: Container(
@@ -105,24 +106,22 @@ class HomeScreen extends StatelessWidget {
                               padding: const EdgeInsets.all(20.0),
                               child: Column(
                                 children: [
-                                 
-                                
                                   const SizedBox(height: 8),
-                                                                  Text(
-                              'きょうのごはんをきめましょう✨',
-                                  style: AppTextStyles.body.copyWith(
-                                    fontSize: 14,
-                                    height: 1.2,
+                                  Text(                                
+                                    'きょうのごはんをきめましょう✨',
+                                    style: AppTextStyles.body.copyWith(
+                                      fontSize: 14,
+                                      height: 1.2,
+                                    ),
+                                    textAlign: TextAlign.left,
                                   ),
-                                  textAlign: TextAlign.left,
-                                ),
                                 ],
                               ),
                             ),
                           ),
-                          
+
                           const SizedBox(height: 16),
-                          
+
                           // 機能ボタン
                           GridView.count(
                             shrinkWrap: true,
@@ -173,4 +172,4 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-} 
+}

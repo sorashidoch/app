@@ -60,9 +60,9 @@ class SettingsScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // テーマ設定
                     KawaiiCard(
                       child: Column(
@@ -75,7 +75,6 @@ class SettingsScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          
                           _buildThemeOption(
                             context,
                             'ライトテーマ',
@@ -84,7 +83,6 @@ class SettingsScreen extends StatelessWidget {
                             appState.themeMode == ThemeMode.light,
                             () => appState.changeTheme(ThemeMode.light),
                           ),
-                          
                           _buildThemeOption(
                             context,
                             'ダークテーマ',
@@ -93,7 +91,6 @@ class SettingsScreen extends StatelessWidget {
                             appState.themeMode == ThemeMode.dark,
                             () => appState.changeTheme(ThemeMode.dark),
                           ),
-                          
                           _buildThemeOption(
                             context,
                             'システム設定に従う',
@@ -105,9 +102,9 @@ class SettingsScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // 通知設定
                     KawaiiCard(
                       child: Column(
@@ -120,7 +117,6 @@ class SettingsScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          
                           SwitchListTile(
                             title: const Text('プッシュ通知'),
                             subtitle: const Text('アプリからの通知を受け取る'),
@@ -130,7 +126,6 @@ class SettingsScreen extends StatelessWidget {
                             },
                             activeColor: AppColors.primary,
                           ),
-                          
                           SwitchListTile(
                             title: const Text('サウンド'),
                             subtitle: const Text('通知音を再生する'),
@@ -143,9 +138,9 @@ class SettingsScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // その他の設定
                     KawaiiCard(
                       child: Column(
@@ -158,7 +153,6 @@ class SettingsScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          
                           _buildSettingItem(
                             context,
                             'プライバシーポリシー',
@@ -167,7 +161,6 @@ class SettingsScreen extends StatelessWidget {
                               // TODO: プライバシーポリシー画面を実装
                             },
                           ),
-                          
                           _buildSettingItem(
                             context,
                             '利用規約',
@@ -176,7 +169,6 @@ class SettingsScreen extends StatelessWidget {
                               // TODO: 利用規約画面を実装
                             },
                           ),
-                          
                           _buildSettingItem(
                             context,
                             'お問い合わせ',
@@ -185,7 +177,6 @@ class SettingsScreen extends StatelessWidget {
                               // TODO: お問い合わせ画面を実装
                             },
                           ),
-                          
                           _buildSettingItem(
                             context,
                             '設定をリセット',
@@ -219,7 +210,7 @@ class SettingsScreen extends StatelessWidget {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: isSelected 
+          color: isSelected
               ? AppColors.primary.withOpacity(0.2)
               : AppColors.primary.withOpacity(0.1),
           borderRadius: BorderRadius.circular(8),
@@ -310,4 +301,4 @@ class SettingsScreen extends StatelessWidget {
       ),
     );
   }
-} 
+}
