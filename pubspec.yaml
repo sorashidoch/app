@@ -35,7 +35,7 @@ dependencies:
   cached_network_image: ^3.3.0
 
   # 通知
-  flutter_local_notifications: ^16.3.0
+  flutter_local_notifications: ^19.4.0
 
   # 設定管理
   settings_ui: ^2.0.2
