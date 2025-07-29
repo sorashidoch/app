@@ -161,7 +161,7 @@ class HomeScreen extends StatelessWidget {
                               FeatureButton(
                                 icon: Icons.person, // プロフィールアイコン
                                 title: 'プロフィール', // プロフィール
-                                color: AppColors.pastelMint, // ミント色
+                                color: AppColors.pastelOrange, // オレンジ色に変更
                                 onTap: () => context.go('/roulette'), // ルーレット画面へ遷移
                               ),
                             ],
