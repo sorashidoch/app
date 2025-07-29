@@ -147,7 +147,7 @@ class HomeScreen extends StatelessWidget {
                               FeatureButton(
                                 icon: Icons.note,
                                 title: 'メモ帳',
-                                color: AppColors.pastelBlue,
+                                color: AppColors.pastelOrange,
                                 onTap: () => context.go('/memo'),
                               ),
                               FeatureButton(

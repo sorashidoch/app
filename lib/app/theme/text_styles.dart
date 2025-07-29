@@ -102,7 +102,7 @@ class AppTextStyles {
   static const TextStyle success = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500,
-    color: AppColors.pastelGreen,
+    color: AppColors.pastelOrange,
     height: 1.3,
   );
 }

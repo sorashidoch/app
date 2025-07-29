@@ -288,7 +288,7 @@ class SettingsScreen extends StatelessWidget {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('設定をリセットしました'),
-                  backgroundColor: AppColors.success,
+                  backgroundColor: AppColors.pastelOrange,
                 ),
               );
             },

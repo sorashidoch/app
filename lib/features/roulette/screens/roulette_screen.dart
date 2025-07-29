@@ -123,7 +123,7 @@ class _RouletteScreenState extends State<RouletteScreen> {
                     children: menus
                         .map((menu) => Chip(
                               label: Text(menu, style: AppTextStyles.bodySmall),
-                              backgroundColor: AppColors.pastelYellow,
+                              backgroundColor: AppColors.pastelOrange,
                             ))
                         .toList(),
                   ),
