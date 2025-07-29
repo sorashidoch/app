@@ -5,16 +5,16 @@ import 'package:provider/provider.dart';
 import '../../../app/theme/colors.dart';
 import '../../../app/theme/text_styles.dart';
 import '../../../shared/services/app_state.dart';
-import '../widgets/kawaii_card.dart';
+import '../../roulette/widgets/kawaii_card.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class RouletteScreen extends StatefulWidget {
+  const RouletteScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<RouletteScreen> createState() => _RouletteScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _RouletteScreenState extends State<RouletteScreen> {
   // ご飯メニュー候補
   final List<String> menus = [
     'カレーライス',

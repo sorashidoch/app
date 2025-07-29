@@ -132,7 +132,7 @@ class HomeScreen extends StatelessWidget {
                             children: [
                               FeatureButton(
                                 icon: Icons.gps_fixed,
-                                title: 'ごはんルーレット',
+                                title: 'f',
                                 color: AppColors.pastelPink,
                                 onTap: () => context.go('/roulette'), // ルーレット画面へ遷移（仮）
                               ),
@@ -162,7 +162,7 @@ class HomeScreen extends StatelessWidget {
                                 icon: Icons.person, // プロフィールアイコン
                                 title: 'プロフィール', // プロフィール
                                 color: AppColors.pastelMint, // ミント色
-                                onTap: () => context.go('/profile'), // プロフィール画面へ遷移
+                                onTap: () => context.go('/roulette'), // ルーレット画面へ遷移
                               ),
                             ],
                           ),

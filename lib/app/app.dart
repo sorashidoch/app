@@ -7,6 +7,7 @@ import '../features/home/screens/home_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../features/settings/screens/settings_screen.dart';
 import '../features/memo/screens/memo_screen.dart';
+import '../features/roulette/screens/roulette_screen.dart';
 
 class SumahonoMobileApp extends StatelessWidget {
   const SumahonoMobileApp({super.key});
@@ -37,8 +38,8 @@ class SumahonoMobileApp extends StatelessWidget {
         builder: (context, state) => const HomeScreen(),
       ),
       GoRoute(
-        path: '/profile',
-        builder: (context, state) => const ProfileScreen(),
+        path: '/roulette',
+        builder: (context, state) => const RouletteScreen(),
       ),
       GoRoute(
         path: '/settings',
