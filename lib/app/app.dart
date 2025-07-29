@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'theme/app_theme.dart';
 import '../shared/services/app_state.dart';
 import '../features/home/screens/home_screen.dart';
-import '../features/profile/screens/profile_screen.dart';
 import '../features/settings/screens/settings_screen.dart';
 import '../features/memo/screens/memo_screen.dart';
 import '../features/roulette/screens/roulette_screen.dart';
