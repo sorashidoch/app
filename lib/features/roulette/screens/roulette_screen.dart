@@ -69,34 +69,41 @@ class _RouletteScreenState extends State<RouletteScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  KawaiiCard(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.restaurant_menu,
-                          color: AppColors.primary,
-                          size: 60,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          selectedMenu ?? '今日のご飯は？',
-                          style: AppTextStyles.kawaiiLarge.copyWith(
+                  SizedBox(
+                    width: 280,
+                    child: KawaiiCard(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.restaurant_menu,
                             color: AppColors.primary,
+                            size: 60,
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        if (selectedMenu != null && !isSpinning)
+                          const SizedBox(height: 16),
                           Text(
-                            'このメニューで決まり！',
-                            style: AppTextStyles.body,
+                            selectedMenu ?? '今日のご飯は？',
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.kawaiiLarge.copyWith(
+                              color: AppColors.primary,
+                            ),
                           ),
-                        if (isSpinning)
-                          Text(
-                            'ルーレット中...',
-                            style: AppTextStyles.caption,
-                          ),
-                      ],
+                          const SizedBox(height: 8),
+                          if (selectedMenu != null && !isSpinning)
+                            Text(
+                              'このメニューで決まり！',
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.body,
+                            ),
+                          if (isSpinning)
+                            Text(
+                              'ルーレット中...',
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.caption,
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 32),

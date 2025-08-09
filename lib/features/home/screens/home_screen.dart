@@ -162,7 +162,7 @@ class HomeScreen extends StatelessWidget {
                                 icon: Icons.person, // プロフィールアイコン
                                 title: 'プロフィール', // プロフィール
                                 color: AppColors.pastelOrange, // オレンジ色に変更
-                                onTap: () => context.go('/roulette'), // ルーレット画面へ遷移
+                                onTap: () => context.go('/profile'), // ルーレット画面へ遷移
                               ),
                             ],
                           ),
