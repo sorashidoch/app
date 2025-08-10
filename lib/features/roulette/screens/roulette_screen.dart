@@ -19,9 +19,21 @@ class RouletteScreen extends StatefulWidget {
 class _RouletteScreenState extends State<RouletteScreen> {
   String? selectedMenu;
   bool isSpinning = false;
+  // 直近のルーレット結果（最大10件、先頭が最新）
+  final List<_HistoryItem> history = <_HistoryItem>[];
+  // 連続して同じ結果を表示しない
+  bool avoidSameConsecutive = false;
+
+  // 日付時刻の簡易整形（yyyy/MM/dd HH:mm）
+  String _formatDateTime(DateTime dt) {
+    String two(int n) => n.toString().padLeft(2, '0');
+    return '${dt.year}/${two(dt.month)}/${two(dt.day)} ${two(dt.hour)}:${two(dt.minute)}';
+  }
 
   void spinRoulette(List<String> menus) async {
     if (menus.isEmpty) return;
+    final String? previousFinal = selectedMenu; // 直前の最終結果を保持
+
     setState(() {
       isSpinning = true;
     });
@@ -32,8 +44,26 @@ class _RouletteScreenState extends State<RouletteScreen> {
       });
       await Future.delayed(const Duration(milliseconds: 100));
     }
+
+    // 最終結果を決定（必要に応じて直前と異なるまで再抽選）
+    String finalPick = menus[Random().nextInt(menus.length)];
+    if (avoidSameConsecutive && previousFinal != null && menus.length > 1) {
+      int guard = 0;
+      while (finalPick == previousFinal && guard < 20) {
+        finalPick = menus[Random().nextInt(menus.length)];
+        guard++;
+      }
+    }
+
     setState(() {
       isSpinning = false;
+      selectedMenu = finalPick;
+      // 履歴に追加（最新を先頭、最大10件）
+      history.insert(
+          0, _HistoryItem(menu: finalPick, dateTime: DateTime.now()));
+      if (history.length > 10) {
+        history.removeRange(10, history.length);
+      }
     });
   }
 
@@ -61,6 +91,24 @@ class _RouletteScreenState extends State<RouletteScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // オプション：連続同一結果回避
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Switch(
+                        value: avoidSameConsecutive,
+                        onChanged: (value) {
+                          setState(() {
+                            avoidSameConsecutive = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(width: 8),
+                      const Text('連続して同じ結果を表示しない'),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+
                   SizedBox(
                     width: 280,
                     child: KawaiiCard(
@@ -130,6 +178,44 @@ class _RouletteScreenState extends State<RouletteScreen> {
                             ))
                         .toList(),
                   ),
+                  const SizedBox(height: 24),
+                  // 履歴表示（最新10件、1行表示）
+                  if (history.isNotEmpty) ...[
+                    Row(
+                      children: [
+                        const Expanded(
+                          child: Text(
+                            '履歴（最新10件）',
+                            style: AppTextStyles.heading3,
+                          ),
+                        ),
+                        TextButton.icon(
+                          onPressed: () {
+                            setState(() {
+                              history.clear();
+                            });
+                          },
+                          icon: const Icon(Icons.delete_outline),
+                          label: const Text('履歴をクリア'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: history
+                          .map(
+                            (h) => Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              child: Text(
+                                '${_formatDateTime(h.dateTime)}  ${h.menu}',
+                                style: AppTextStyles.bodySmall,
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -138,4 +224,11 @@ class _RouletteScreenState extends State<RouletteScreen> {
       ),
     );
   }
+}
+
+// 履歴アイテム（メニュー名 + 日時）
+class _HistoryItem {
+  const _HistoryItem({required this.menu, required this.dateTime});
+  final String menu;
+  final DateTime dateTime;
 }
