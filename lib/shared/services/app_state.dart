@@ -124,6 +124,15 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  // アレルゲンの一括置換（画面の「決定」で反映）
+  Future<void> setSelectedAllergens(Set<Allergen> newSelected) async {
+    _selectedAllergens
+      ..clear()
+      ..addAll(newSelected);
+    await _saveSelectedAllergensToPrefs();
+    notifyListeners();
+  }
+
   // アレルゲンを全てクリア
   Future<void> clearAllergens() async {
     _selectedAllergens.clear();
@@ -153,6 +162,15 @@ class AppState extends ChangeNotifier {
   // ルーレットの料理名を全てクリア
   Future<void> clearRouletteMenus() async {
     _rouletteMenus.clear();
+    await _saveRouletteMenusToPrefs();
+    notifyListeners();
+  }
+
+  // ルーレットの料理名の一括置換（画面の「完了」で反映）
+  Future<void> setRouletteMenus(List<String> newMenus) async {
+    _rouletteMenus
+      ..clear()
+      ..addAll(newMenus);
     await _saveRouletteMenusToPrefs();
     notifyListeners();
   }

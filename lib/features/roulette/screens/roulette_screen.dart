@@ -77,6 +77,15 @@ class _RouletteScreenState extends State<RouletteScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
         ),
+        actions: [
+          IconButton(
+            tooltip: '料理名を変更',
+            icon: const Icon(Icons.tune),
+            onPressed: () {
+              context.go('/profile/food', extra: '/roulette');
+            },
+          ),
+        ],
       ),
       body: DecoratedBox(
         decoration: const BoxDecoration(

@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import '../features/history/screens/history_screen.dart';
 import '../features/home/screens/home_screen.dart';
 import '../features/memo/screens/memo_screen.dart';
+import '../features/profile/screens/allergy_screen.dart';
+import '../features/profile/screens/food_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../features/roulette/screens/roulette_screen.dart';
 import '../features/settings/screens/settings_screen.dart';
@@ -46,6 +48,15 @@ class SumahonoMobileApp extends StatelessWidget {
       GoRoute(
         path: '/profile',
         builder: (context, state) => const ProfileScreen(),
+      ),
+      GoRoute(
+        path: '/profile/allergy',
+        builder: (context, state) => const AllergyScreen(),
+      ),
+      GoRoute(
+        path: '/profile/food',
+        builder: (context, state) =>
+            FoodScreen(returnTo: state.extra as String?),
       ),
       GoRoute(
         path: '/memo',

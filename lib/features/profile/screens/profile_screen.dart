@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -7,7 +6,7 @@ import '../../../shared/models/allergen.dart';
 import '../../../shared/models/allergen_icons.dart';
 import '../../../shared/services/app_state.dart';
 
-/// プロフィール画面：アレルゲン登録 + ルーレット料理名設定
+/// プロフィール画面：選択中アレルゲン表示 + ルーレット料理名一覧（変更ボタン）
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -26,74 +25,16 @@ class ProfileScreen extends StatelessWidget {
       );
     }
 
-    // トグルチップ（共通）
-    Widget buildAllergenChip(Allergen allergen) {
-      final isSelected = appState.selectedAllergens.contains(allergen);
-      final theme = Theme.of(context);
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-        child: FilterChip(
-          label: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                iconForAllergen(allergen),
-                size: 18,
-                color: isSelected ? theme.colorScheme.onPrimaryContainer : null,
-              ),
-              const SizedBox(width: 8),
-              Text(allergenLabel[allergen] ?? allergen.name),
-            ],
-          ),
-          selected: isSelected,
-          onSelected: (value) async {
-            await appState.setAllergenSelected(allergen, value);
-          },
-          selectedColor: colorForAllergen(allergen, theme),
-          showCheckmark: false,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        ),
-      );
-    }
-
     // 並び順を日本語ラベルで整える
-    final mandatory = [...mandatoryAllergens]..sort(compareByLabel);
-    final recommended = [...recommendedAllergens]..sort(compareByLabel);
     final selected = appState.selectedAllergens.toList()..sort(compareByLabel);
-
-    // 料理名入力用のコントローラ
-    final TextEditingController menuController = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('プロフィール'),
-        actions: [
-          TextButton(
-            onPressed: () async => appState.clearAllergens(),
-            child: const Text(
-              'クリア',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ],
       ),
       body: ListView(
         children: [
-          buildSectionHeader('アレルゲン（義務表示 8品目）'),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Wrap(
-              children: mandatory.map(buildAllergenChip).toList(),
-            ),
-          ),
-          buildSectionHeader('アレルゲン（推奨表示 20品目）'),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Wrap(
-              children: recommended.map(buildAllergenChip).toList(),
-            ),
-          ),
+          // 選択中アレルゲンの表示と遷移ボタン
           buildSectionHeader('選択中のアレルゲン'),
           if (selected.isEmpty)
             const Padding(
@@ -115,51 +56,28 @@ class ProfileScreen extends StatelessWidget {
                             size: 18,
                           ),
                           label: Text(allergenLabel[a] ?? a.name),
-                          onDeleted: () async =>
-                              appState.setAllergenSelected(a, false),
                         ),
                       ),
                     )
                     .toList(),
               ),
             ),
-
-          // ルーレットの料理名
-          buildSectionHeader('ルーレットの料理名'),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: menuController,
-                    maxLength: 20, // 最大20文字
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(20), // 入力自体を20文字に制限
-                    ],
-                    decoration: const InputDecoration(
-                      hintText: '例：ラーメン',
-                      labelText: '料理名を追加',
-                      border: OutlineInputBorder(),
-                    ),
-                    onSubmitted: (value) async {
-                      await appState.addRouletteMenu(value);
-                      menuController.clear();
-                    },
-                  ),
-                ),
-                const SizedBox(width: 8),
-                ElevatedButton(
-                  onPressed: () async {
-                    await appState.addRouletteMenu(menuController.text);
-                    menuController.clear();
-                  },
-                  child: const Text('追加'),
-                ),
-              ],
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: OutlinedButton.icon(
+                icon: const Icon(Icons.tune),
+                label: const Text('変更する（アレルゲン）'),
+                onPressed: () {
+                  context.go('/profile/allergy');
+                },
+              ),
             ),
           ),
-          const SizedBox(height: 8),
+
+          // ルーレットの料理名（一覧と変更ボタンのみ）
+          buildSectionHeader('ルーレットの料理名'),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Wrap(
@@ -170,7 +88,6 @@ class ProfileScreen extends StatelessWidget {
                           horizontal: 6, vertical: 6),
                       child: InputChip(
                         label: Text(m),
-                        onDeleted: () async => appState.removeRouletteMenu(m),
                       ),
                     ),
                   )
@@ -182,6 +99,19 @@ class ProfileScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Text('料理名が未登録です'),
             ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: OutlinedButton.icon(
+                icon: const Icon(Icons.tune),
+                label: const Text('変更する（料理名）'),
+                onPressed: () {
+                  context.go('/profile/food');
+                },
+              ),
+            ),
+          ),
 
           const SizedBox(height: 24),
         ],
