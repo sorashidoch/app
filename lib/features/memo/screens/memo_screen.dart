@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+
 import '../../../app/theme/colors.dart';
 import '../../../app/theme/text_styles.dart';
+import '../../../shared/models/memo_favorite.dart';
+import '../../../shared/services/app_state.dart';
 import '../widgets/kawaii_card.dart';
 
 class MemoScreen extends StatefulWidget {
@@ -48,8 +52,10 @@ class _MemoScreenState extends State<MemoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final appState = context.watch<AppState>();
+
     return Scaffold(
-      body: Container(
+      body: DecoratedBox(
         decoration: const BoxDecoration(
           gradient: AppColors.primaryGradient,
         ),
@@ -243,6 +249,13 @@ class _MemoScreenState extends State<MemoScreen> {
                                   itemCount: _memos.length,
                                   itemBuilder: (context, index) {
                                     final memo = _memos[index];
+                                    final favoriteItem = FavoriteMemoItem(
+                                      title: memo.title,
+                                      content: memo.content,
+                                      memoDateTime: memo.timestamp,
+                                    );
+                                    final isFav =
+                                        appState.isFavoriteMemo(favoriteItem);
                                     return Padding(
                                       padding:
                                           const EdgeInsets.only(bottom: 12),
@@ -266,6 +279,23 @@ class _MemoScreenState extends State<MemoScreen> {
                                                             AppColors.primary,
                                                       ),
                                                     ),
+                                                  ),
+                                                  IconButton(
+                                                    onPressed: () => appState
+                                                        .toggleFavoriteMemo(
+                                                            favoriteItem),
+                                                    icon: Icon(
+                                                      isFav
+                                                          ? Icons.star
+                                                          : Icons.star_border,
+                                                      color: isFav
+                                                          ? Colors.amber
+                                                          : Colors.grey,
+                                                      size: 22,
+                                                    ),
+                                                    tooltip: isFav
+                                                        ? 'お気に入りを外す'
+                                                        : 'お気に入りに追加',
                                                   ),
                                                   IconButton(
                                                     onPressed: () =>
@@ -313,13 +343,12 @@ class _MemoScreenState extends State<MemoScreen> {
 }
 
 class MemoItem {
-  final String title;
-  final String content;
-  final DateTime timestamp;
-
   MemoItem({
     required this.title,
     required this.content,
     required this.timestamp,
   });
+  final String title;
+  final String content;
+  final DateTime timestamp;
 }

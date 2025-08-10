@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/allergen.dart';
+import '../models/memo_favorite.dart';
 import '../models/roulette_history.dart';
 
 class AppState extends ChangeNotifier {
@@ -12,11 +13,13 @@ class AppState extends ChangeNotifier {
   static const String _prefsKeySelectedAllergens = 'selected_allergens';
   static const String _prefsKeyRouletteMenus = 'roulette_menus';
   static const String _prefsKeyRouletteHistory = 'roulette_history';
+  static const String _prefsKeyFavoriteMemos = 'favorite_memos';
 
   Future<void> _initialize() async {
     await _loadSelectedAllergensFromPrefs();
     await _loadRouletteMenusFromPrefs();
     await _loadRouletteHistoryFromPrefs();
+    await _loadFavoriteMemosFromPrefs();
   }
 
   // テーマモード
@@ -44,6 +47,9 @@ class AppState extends ChangeNotifier {
   // ルーレット履歴（最新が先頭、最大100件まで保持）
   final List<RouletteHistoryItem> _rouletteHistory = <RouletteHistoryItem>[];
 
+  // お気に入りメモ（最新が先頭）
+  final List<FavoriteMemoItem> _favoriteMemos = <FavoriteMemoItem>[];
+
   // ゲッター
   ThemeMode get themeMode => _themeMode;
   Locale get locale => _locale;
@@ -57,6 +63,7 @@ class AppState extends ChangeNotifier {
   List<String> get rouletteMenus => List.unmodifiable(_rouletteMenus);
   List<RouletteHistoryItem> get rouletteHistory =>
       List.unmodifiable(_rouletteHistory);
+  List<FavoriteMemoItem> get favoriteMemos => List.unmodifiable(_favoriteMemos);
 
   // テーマ変更
   void changeTheme(ThemeMode mode) {
@@ -168,6 +175,28 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  // お気に入りメモのトグル
+  Future<void> toggleFavoriteMemo(FavoriteMemoItem item) async {
+    final index = _favoriteMemos.indexOf(item);
+    if (index >= 0) {
+      _favoriteMemos.removeAt(index);
+    } else {
+      _favoriteMemos.insert(0, item);
+    }
+    await _saveFavoriteMemosToPrefs();
+    notifyListeners();
+  }
+
+  bool isFavoriteMemo(FavoriteMemoItem item) {
+    return _favoriteMemos.contains(item);
+  }
+
+  Future<void> clearFavoriteMemos() async {
+    _favoriteMemos.clear();
+    await _saveFavoriteMemosToPrefs();
+    notifyListeners();
+  }
+
   // 設定をリセット
   void resetSettings() {
     _themeMode = ThemeMode.light;
@@ -180,6 +209,7 @@ class AppState extends ChangeNotifier {
       ..clear()
       ..addAll(_defaultRouletteMenus);
     _rouletteHistory.clear();
+    _favoriteMemos.clear();
     notifyListeners();
   }
 
@@ -229,6 +259,25 @@ class AppState extends ChangeNotifier {
       ..addAll(saved
           .map((s) => RouletteHistoryItem.fromPersistedString(s))
           .whereType<RouletteHistoryItem>());
+    notifyListeners();
+  }
+
+  Future<void> _saveFavoriteMemosToPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final data = _favoriteMemos
+        .map((e) => e.toPersistedString())
+        .toList(growable: false);
+    await prefs.setStringList(_prefsKeyFavoriteMemos, data);
+  }
+
+  Future<void> _loadFavoriteMemosFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final saved = prefs.getStringList(_prefsKeyFavoriteMemos) ?? <String>[];
+    _favoriteMemos
+      ..clear()
+      ..addAll(saved
+          .map((s) => FavoriteMemoItem.fromPersistedString(s))
+          .whereType<FavoriteMemoItem>());
     notifyListeners();
   }
 }

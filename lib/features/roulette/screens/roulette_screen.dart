@@ -31,6 +31,8 @@ class _RouletteScreenState extends State<RouletteScreen> {
   void spinRoulette(List<String> menus) async {
     if (menus.isEmpty) return;
     final String? previousFinal = selectedMenu; // 直前の最終結果を保持
+    // 待機後にBuildContextを使わないよう、先に読み出しておく
+    final appState = context.read<AppState>();
 
     setState(() {
       isSpinning = true;
@@ -59,7 +61,6 @@ class _RouletteScreenState extends State<RouletteScreen> {
       selectedMenu = finalPick;
     });
     // 履歴に追加（グローバル状態）
-    final appState = context.read<AppState>();
     await appState.addRouletteHistory(finalPick, now);
   }
 
@@ -82,139 +83,148 @@ class _RouletteScreenState extends State<RouletteScreen> {
           gradient: AppColors.sunsetGradient,
         ),
         child: SafeArea(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // オプション：連続同一結果回避
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(24.0),
+                physics: const BouncingScrollPhysics(),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Switch(
-                        value: avoidSameConsecutive,
-                        onChanged: (value) {
-                          setState(() {
-                            avoidSameConsecutive = value;
-                          });
-                        },
-                      ),
-                      const SizedBox(width: 8),
-                      const Text('連続して同じ結果を表示しない'),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-
-                  SizedBox(
-                    width: 280,
-                    child: KawaiiCard(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      // オプション：連続同一結果回避
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
-                            Icons.restaurant_menu,
-                            color: AppColors.primary,
-                            size: 60,
+                          Switch(
+                            value: avoidSameConsecutive,
+                            onChanged: (value) {
+                              setState(() {
+                                avoidSameConsecutive = value;
+                              });
+                            },
                           ),
-                          const SizedBox(height: 16),
-                          Text(
-                            selectedMenu ?? '今日のご飯は？',
-                            textAlign: TextAlign.center,
-                            style: AppTextStyles.kawaiiLarge.copyWith(
-                              color: AppColors.primary,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          if (selectedMenu != null && !isSpinning)
-                            const Text(
-                              'このメニューで決まり！',
-                              textAlign: TextAlign.center,
-                              style: AppTextStyles.body,
-                            ),
-                          if (isSpinning)
-                            const Text(
-                              'ルーレット中...',
-                              textAlign: TextAlign.center,
-                              style: AppTextStyles.caption,
-                            ),
+                          const SizedBox(width: 8),
+                          const Text('連続して同じ結果を表示しない'),
                         ],
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-                  ElevatedButton(
-                    onPressed: isSpinning || menus.isEmpty
-                        ? null
-                        : () => spinRoulette(menus),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 32, vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                    ),
-                    child: Text(
-                      isSpinning
-                          ? 'ルーレット中...'
-                          : (menus.isEmpty ? '料理名を追加してください' : 'ルーレットを回す'),
-                      style: AppTextStyles.button,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  // メニュー一覧をかわいく表示
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    spacing: 12,
-                    children: menus
-                        .map((menu) => Chip(
-                              label: Text(menu, style: AppTextStyles.bodySmall),
-                              backgroundColor: AppColors.pastelOrange,
-                            ))
-                        .toList(),
-                  ),
-                  const SizedBox(height: 24),
-                  // 履歴表示（最新10件、1行表示）
-                  if (history.isNotEmpty) ...[
-                    Row(
-                      children: [
-                        const Expanded(
-                          child: Text(
-                            '履歴（最新10件）',
-                            style: AppTextStyles.heading3,
+                      const SizedBox(height: 12),
+                      Center(
+                        child: SizedBox(
+                          width: 280,
+                          child: KawaiiCard(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.restaurant_menu,
+                                  color: AppColors.primary,
+                                  size: 60,
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  selectedMenu ?? '今日のご飯は？',
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyles.kawaiiLarge.copyWith(
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                if (selectedMenu != null && !isSpinning)
+                                  const Text(
+                                    'このメニューで決まり！',
+                                    textAlign: TextAlign.center,
+                                    style: AppTextStyles.body,
+                                  ),
+                                if (isSpinning)
+                                  const Text(
+                                    'ルーレット中...',
+                                    textAlign: TextAlign.center,
+                                    style: AppTextStyles.caption,
+                                  ),
+                              ],
+                            ),
                           ),
                         ),
-                        TextButton.icon(
-                          onPressed: () async {
-                            await appState.clearRouletteHistory();
-                          },
-                          icon: const Icon(Icons.delete_outline),
-                          label: const Text('履歴をクリア'),
+                      ),
+                      const SizedBox(height: 32),
+                      ElevatedButton(
+                        onPressed: isSpinning || menus.isEmpty
+                            ? null
+                            : () => spinRoulette(menus),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 32, vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24),
+                          ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: history
-                          .take(10)
-                          .map(
-                            (h) => Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Text(
+                          isSpinning
+                              ? 'ルーレット中...'
+                              : (menus.isEmpty ? '料理名を追加してください' : 'ルーレットを回す'),
+                          style: AppTextStyles.button,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      // メニュー一覧をかわいく表示
+                      Wrap(
+                        alignment: WrapAlignment.center,
+                        spacing: 12,
+                        children: menus
+                            .map((menu) => Chip(
+                                  label: Text(menu,
+                                      style: AppTextStyles.bodySmall),
+                                  backgroundColor: AppColors.pastelOrange,
+                                ))
+                            .toList(),
+                      ),
+                      const SizedBox(height: 24),
+                      // 履歴表示（最新10件、1行表示）
+                      if (history.isNotEmpty) ...[
+                        Row(
+                          children: [
+                            const Expanded(
                               child: Text(
-                                '${_formatDateTime(h.dateTime)}  ${h.menu}',
-                                style: AppTextStyles.bodySmall,
+                                '履歴（最新10件）',
+                                style: AppTextStyles.heading3,
                               ),
                             ),
-                          )
-                          .toList(),
-                    ),
-                  ],
-                ],
-              ),
-            ),
+                            TextButton.icon(
+                              onPressed: () async {
+                                await appState.clearRouletteHistory();
+                              },
+                              icon: const Icon(Icons.delete_outline),
+                              label: const Text('履歴をクリア'),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: history
+                              .take(10)
+                              .map(
+                                (h) => Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 4),
+                                  child: Text(
+                                    '${_formatDateTime(h.dateTime)}  ${h.menu}',
+                                    style: AppTextStyles.bodySmall,
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),
