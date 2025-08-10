@@ -8,7 +8,7 @@
     "dev": "flutter run",
     "dev:android": "flutter run -d android",
     "dev:ios": "flutter run -d ios",
-    "dev:web": "flutter run -d chrome",
+    "dev:web": "flutter run -d chrome --web-port 5173 --web-hostname localhost",
     "build:android": "flutter build apk",
     "build:ios": "flutter build ios",
     "build:web": "flutter build web",
