@@ -1,6 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../models/allergen.dart';
 
 class AppState extends ChangeNotifier {
+  AppState() {
+    _initialize();
+  }
+  // 永続化キー
+  static const String _prefsKeySelectedAllergens = 'selected_allergens';
+
+  Future<void> _initialize() async {
+    await _loadSelectedAllergensFromPrefs();
+  }
+
   // テーマモード
   ThemeMode _themeMode = ThemeMode.light;
 
@@ -17,6 +30,9 @@ class AppState extends ChangeNotifier {
   bool _soundEnabled = true;
   String _selectedTheme = 'default';
 
+  // アレルゲン選択状態（重複不可のため Set を使用）
+  final Set<Allergen> _selectedAllergens = <Allergen>{};
+
   // ゲッター
   ThemeMode get themeMode => _themeMode;
   Locale get locale => _locale;
@@ -26,6 +42,7 @@ class AppState extends ChangeNotifier {
   bool get notificationsEnabled => _notificationsEnabled;
   bool get soundEnabled => _soundEnabled;
   String get selectedTheme => _selectedTheme;
+  Set<Allergen> get selectedAllergens => _selectedAllergens;
 
   // テーマ変更
   void changeTheme(ThemeMode mode) {
@@ -75,6 +92,24 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  // アレルゲンの追加・削除
+  Future<void> setAllergenSelected(Allergen allergen, bool isSelected) async {
+    if (isSelected) {
+      _selectedAllergens.add(allergen);
+    } else {
+      _selectedAllergens.remove(allergen);
+    }
+    await _saveSelectedAllergensToPrefs();
+    notifyListeners();
+  }
+
+  // アレルゲンを全てクリア
+  Future<void> clearAllergens() async {
+    _selectedAllergens.clear();
+    await _saveSelectedAllergensToPrefs();
+    notifyListeners();
+  }
+
   // 設定をリセット
   void resetSettings() {
     _themeMode = ThemeMode.light;
@@ -82,6 +117,23 @@ class AppState extends ChangeNotifier {
     _notificationsEnabled = true;
     _soundEnabled = true;
     _selectedTheme = 'default';
+    _selectedAllergens.clear();
+    notifyListeners();
+  }
+
+  // --- 永続化（SharedPreferences） ---
+  Future<void> _saveSelectedAllergensToPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final names = _selectedAllergens.map((e) => e.name).toList(growable: false);
+    await prefs.setStringList(_prefsKeySelectedAllergens, names);
+  }
+
+  Future<void> _loadSelectedAllergensFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final saved = prefs.getStringList(_prefsKeySelectedAllergens) ?? <String>[];
+    _selectedAllergens
+      ..clear()
+      ..addAll(saved.map((name) => Allergen.values.byName(name)));
     notifyListeners();
   }
 }
