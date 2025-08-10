@@ -19,8 +19,6 @@ class RouletteScreen extends StatefulWidget {
 class _RouletteScreenState extends State<RouletteScreen> {
   String? selectedMenu;
   bool isSpinning = false;
-  // 直近のルーレット結果（最大10件、先頭が最新）
-  final List<_HistoryItem> history = <_HistoryItem>[];
   // 連続して同じ結果を表示しない
   bool avoidSameConsecutive = false;
 
@@ -55,22 +53,21 @@ class _RouletteScreenState extends State<RouletteScreen> {
       }
     }
 
+    final now = DateTime.now();
     setState(() {
       isSpinning = false;
       selectedMenu = finalPick;
-      // 履歴に追加（最新を先頭、最大10件）
-      history.insert(
-          0, _HistoryItem(menu: finalPick, dateTime: DateTime.now()));
-      if (history.length > 10) {
-        history.removeRange(10, history.length);
-      }
     });
+    // 履歴に追加（グローバル状態）
+    final appState = context.read<AppState>();
+    await appState.addRouletteHistory(finalPick, now);
   }
 
   @override
   Widget build(BuildContext context) {
     final appState = context.watch<AppState>();
     final menus = appState.rouletteMenus;
+    final history = appState.rouletteHistory;
 
     return Scaffold(
       appBar: AppBar(
@@ -190,10 +187,8 @@ class _RouletteScreenState extends State<RouletteScreen> {
                           ),
                         ),
                         TextButton.icon(
-                          onPressed: () {
-                            setState(() {
-                              history.clear();
-                            });
+                          onPressed: () async {
+                            await appState.clearRouletteHistory();
                           },
                           icon: const Icon(Icons.delete_outline),
                           label: const Text('履歴をクリア'),
@@ -204,6 +199,7 @@ class _RouletteScreenState extends State<RouletteScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: history
+                          .take(10)
                           .map(
                             (h) => Padding(
                               padding: const EdgeInsets.symmetric(vertical: 4),
@@ -224,11 +220,4 @@ class _RouletteScreenState extends State<RouletteScreen> {
       ),
     );
   }
-}
-
-// 履歴アイテム（メニュー名 + 日時）
-class _HistoryItem {
-  const _HistoryItem({required this.menu, required this.dateTime});
-  final String menu;
-  final DateTime dateTime;
 }

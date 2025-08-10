@@ -155,9 +155,7 @@ class HomeScreen extends StatelessWidget {
                                 icon: Icons.history,
                                 title: '履歴・お気に入り',
                                 color: AppColors.pastelPurple,
-                                onTap: () {
-                                  // TODO: 履歴機能を実装
-                                },
+                                onTap: () => context.go('/history'),
                               ),
                             ],
                           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/allergen.dart';
+import '../models/roulette_history.dart';
 
 class AppState extends ChangeNotifier {
   AppState() {
@@ -10,10 +11,12 @@ class AppState extends ChangeNotifier {
   // 永続化キー
   static const String _prefsKeySelectedAllergens = 'selected_allergens';
   static const String _prefsKeyRouletteMenus = 'roulette_menus';
+  static const String _prefsKeyRouletteHistory = 'roulette_history';
 
   Future<void> _initialize() async {
     await _loadSelectedAllergensFromPrefs();
     await _loadRouletteMenusFromPrefs();
+    await _loadRouletteHistoryFromPrefs();
   }
 
   // テーマモード
@@ -38,6 +41,9 @@ class AppState extends ChangeNotifier {
   // ルーレットの料理名一覧（ユーザーが編集可能）
   final List<String> _rouletteMenus = <String>[];
 
+  // ルーレット履歴（最新が先頭、最大100件まで保持）
+  final List<RouletteHistoryItem> _rouletteHistory = <RouletteHistoryItem>[];
+
   // ゲッター
   ThemeMode get themeMode => _themeMode;
   Locale get locale => _locale;
@@ -49,6 +55,8 @@ class AppState extends ChangeNotifier {
   String get selectedTheme => _selectedTheme;
   Set<Allergen> get selectedAllergens => _selectedAllergens;
   List<String> get rouletteMenus => List.unmodifiable(_rouletteMenus);
+  List<RouletteHistoryItem> get rouletteHistory =>
+      List.unmodifiable(_rouletteHistory);
 
   // テーマ変更
   void changeTheme(ThemeMode mode) {
@@ -120,7 +128,6 @@ class AppState extends ChangeNotifier {
   Future<void> addRouletteMenu(String name) async {
     final trimmed = name.trim();
     if (trimmed.isEmpty) return;
-    // 重複を避ける（大文字小文字と全角半角を簡易同一視）
     final exists =
         _rouletteMenus.any((m) => m.toLowerCase() == trimmed.toLowerCase());
     if (exists) return;
@@ -143,6 +150,24 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  // ルーレット履歴の追加（最新を先頭、最大100件）
+  Future<void> addRouletteHistory(String menu, DateTime dateTime) async {
+    _rouletteHistory.insert(
+        0, RouletteHistoryItem(menu: menu, dateTime: dateTime));
+    if (_rouletteHistory.length > 100) {
+      _rouletteHistory.removeRange(100, _rouletteHistory.length);
+    }
+    await _saveRouletteHistoryToPrefs();
+    notifyListeners();
+  }
+
+  // 履歴のクリア
+  Future<void> clearRouletteHistory() async {
+    _rouletteHistory.clear();
+    await _saveRouletteHistoryToPrefs();
+    notifyListeners();
+  }
+
   // 設定をリセット
   void resetSettings() {
     _themeMode = ThemeMode.light;
@@ -154,6 +179,7 @@ class AppState extends ChangeNotifier {
     _rouletteMenus
       ..clear()
       ..addAll(_defaultRouletteMenus);
+    _rouletteHistory.clear();
     notifyListeners();
   }
 
@@ -184,6 +210,25 @@ class AppState extends ChangeNotifier {
     _rouletteMenus
       ..clear()
       ..addAll(saved == null || saved.isEmpty ? _defaultRouletteMenus : saved);
+    notifyListeners();
+  }
+
+  Future<void> _saveRouletteHistoryToPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final data = _rouletteHistory
+        .map((e) => e.toPersistedString())
+        .toList(growable: false);
+    await prefs.setStringList(_prefsKeyRouletteHistory, data);
+  }
+
+  Future<void> _loadRouletteHistoryFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final saved = prefs.getStringList(_prefsKeyRouletteHistory) ?? <String>[];
+    _rouletteHistory
+      ..clear()
+      ..addAll(saved
+          .map((s) => RouletteHistoryItem.fromPersistedString(s))
+          .whereType<RouletteHistoryItem>());
     notifyListeners();
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../features/history/screens/history_screen.dart';
 import '../features/home/screens/home_screen.dart';
 import '../features/memo/screens/memo_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
@@ -49,6 +50,10 @@ class SumahonoMobileApp extends StatelessWidget {
       GoRoute(
         path: '/memo',
         builder: (context, state) => const MemoScreen(),
+      ),
+      GoRoute(
+        path: '/history',
+        builder: (context, state) => const HistoryScreen(),
       ),
       /*要件定義外-profileに統一or似たような独自要素(一部連携必須) */
       GoRoute(
