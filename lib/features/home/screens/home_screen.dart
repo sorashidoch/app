@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../app/theme/colors.dart';
 import '../../../app/theme/text_styles.dart';
-import '../widgets/kawaii_card.dart';
 import '../widgets/feature_button.dart';
+import '../widgets/kawaii_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -11,7 +12,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: DecoratedBox(
         decoration: const BoxDecoration(
           gradient: AppColors.primaryGradient,
         ),
@@ -107,7 +108,7 @@ class HomeScreen extends StatelessWidget {
                               child: Column(
                                 children: [
                                   const SizedBox(height: 8),
-                                  Text(                                
+                                  Text(
                                     'きょうのごはんをきめましょう✨',
                                     style: AppTextStyles.body.copyWith(
                                       fontSize: 14,
@@ -134,15 +135,15 @@ class HomeScreen extends StatelessWidget {
                                 icon: Icons.gps_fixed,
                                 title: 'ルーレット',
                                 color: AppColors.pastelPink,
-                                onTap: () => context.go('/roulette'), // ルーレット画面へ遷移（仮）
+                                onTap: () =>
+                                    context.go('/roulette'), // ルーレット画面へ遷移（仮）
                               ),
                               FeatureButton(
-                                icon: Icons.favorite_border,
-                                title: 'お気に入り',
-                                color: AppColors.pastelRed,
-                                onTap: () {
-                                  // TODO: お気に入り機能を実装
-                                },
+                                icon: Icons.person, // プロフィールアイコン
+                                title: 'プロフィール', // プロフィール
+                                color: AppColors.pastelOrange, // オレンジ色に変更
+                                onTap: () =>
+                                    context.go('/profile'), // ルーレット画面へ遷移
                               ),
                               FeatureButton(
                                 icon: Icons.note,
@@ -152,17 +153,11 @@ class HomeScreen extends StatelessWidget {
                               ),
                               FeatureButton(
                                 icon: Icons.history,
-                                title: '履歴',
+                                title: '履歴・お気に入り',
                                 color: AppColors.pastelPurple,
                                 onTap: () {
                                   // TODO: 履歴機能を実装
                                 },
-                              ),
-                              FeatureButton(
-                                icon: Icons.person, // プロフィールアイコン
-                                title: 'プロフィール', // プロフィール
-                                color: AppColors.pastelOrange, // オレンジ色に変更
-                                onTap: () => context.go('/profile'), // ルーレット画面へ遷移
                               ),
                             ],
                           ),

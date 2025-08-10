@@ -1,7 +1,9 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+
 import '../../../app/theme/colors.dart';
 import '../../../app/theme/text_styles.dart';
 import '../../../shared/services/app_state.dart';
@@ -15,24 +17,11 @@ class RouletteScreen extends StatefulWidget {
 }
 
 class _RouletteScreenState extends State<RouletteScreen> {
-  // ご飯メニュー候補
-  final List<String> menus = [
-    'カレーライス',
-    'ハンバーグ',
-    'オムライス',
-    'ラーメン',
-    '寿司',
-    '唐揚げ',
-    'パスタ',
-    'うどん',
-    'サラダ',
-    '焼き魚',
-  ];
-
   String? selectedMenu;
   bool isSpinning = false;
 
-  void spinRoulette() async {
+  void spinRoulette(List<String> menus) async {
+    if (menus.isEmpty) return;
     setState(() {
       isSpinning = true;
     });
@@ -50,6 +39,9 @@ class _RouletteScreenState extends State<RouletteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final appState = context.watch<AppState>();
+    final menus = appState.rouletteMenus;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('今日のご飯ルーレット'),
@@ -58,7 +50,7 @@ class _RouletteScreenState extends State<RouletteScreen> {
           onPressed: () => context.go('/'),
         ),
       ),
-      body: Container(
+      body: DecoratedBox(
         decoration: const BoxDecoration(
           gradient: AppColors.sunsetGradient,
         ),
@@ -91,13 +83,13 @@ class _RouletteScreenState extends State<RouletteScreen> {
                           ),
                           const SizedBox(height: 8),
                           if (selectedMenu != null && !isSpinning)
-                            Text(
+                            const Text(
                               'このメニューで決まり！',
                               textAlign: TextAlign.center,
                               style: AppTextStyles.body,
                             ),
                           if (isSpinning)
-                            Text(
+                            const Text(
                               'ルーレット中...',
                               textAlign: TextAlign.center,
                               style: AppTextStyles.caption,
@@ -108,7 +100,9 @@ class _RouletteScreenState extends State<RouletteScreen> {
                   ),
                   const SizedBox(height: 32),
                   ElevatedButton(
-                    onPressed: isSpinning ? null : spinRoulette,
+                    onPressed: isSpinning || menus.isEmpty
+                        ? null
+                        : () => spinRoulette(menus),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
                       padding: const EdgeInsets.symmetric(
@@ -118,7 +112,9 @@ class _RouletteScreenState extends State<RouletteScreen> {
                       ),
                     ),
                     child: Text(
-                      isSpinning ? 'ルーレット中...' : 'ルーレットを回す',
+                      isSpinning
+                          ? 'ルーレット中...'
+                          : (menus.isEmpty ? '料理名を追加してください' : 'ルーレットを回す'),
                       style: AppTextStyles.button,
                     ),
                   ),

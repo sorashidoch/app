@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -6,7 +7,7 @@ import '../../../shared/models/allergen.dart';
 import '../../../shared/models/allergen_icons.dart';
 import '../../../shared/services/app_state.dart';
 
-/// プロフィール画面：アレルゲン登録
+/// プロフィール画面：アレルゲン登録 + ルーレット料理名設定
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -60,6 +61,9 @@ class ProfileScreen extends StatelessWidget {
     final mandatory = [...mandatoryAllergens]..sort(compareByLabel);
     final recommended = [...recommendedAllergens]..sort(compareByLabel);
     final selected = appState.selectedAllergens.toList()..sort(compareByLabel);
+
+    // 料理名入力用のコントローラ
+    final TextEditingController menuController = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -119,6 +123,66 @@ class ProfileScreen extends StatelessWidget {
                     .toList(),
               ),
             ),
+
+          // ルーレットの料理名
+          buildSectionHeader('ルーレットの料理名'),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: menuController,
+                    maxLength: 20, // 最大20文字
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(20), // 入力自体を20文字に制限
+                    ],
+                    decoration: const InputDecoration(
+                      hintText: '例：ラーメン',
+                      labelText: '料理名を追加',
+                      border: OutlineInputBorder(),
+                    ),
+                    onSubmitted: (value) async {
+                      await appState.addRouletteMenu(value);
+                      menuController.clear();
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton(
+                  onPressed: () async {
+                    await appState.addRouletteMenu(menuController.text);
+                    menuController.clear();
+                  },
+                  child: const Text('追加'),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Wrap(
+              children: appState.rouletteMenus
+                  .map(
+                    (m) => Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 6),
+                      child: InputChip(
+                        label: Text(m),
+                        onDeleted: () async => appState.removeRouletteMenu(m),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
+          if (appState.rouletteMenus.isEmpty)
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Text('料理名が未登録です'),
+            ),
+
           const SizedBox(height: 24),
         ],
       ),

@@ -9,9 +9,11 @@ class AppState extends ChangeNotifier {
   }
   // 永続化キー
   static const String _prefsKeySelectedAllergens = 'selected_allergens';
+  static const String _prefsKeyRouletteMenus = 'roulette_menus';
 
   Future<void> _initialize() async {
     await _loadSelectedAllergensFromPrefs();
+    await _loadRouletteMenusFromPrefs();
   }
 
   // テーマモード
@@ -33,6 +35,9 @@ class AppState extends ChangeNotifier {
   // アレルゲン選択状態（重複不可のため Set を使用）
   final Set<Allergen> _selectedAllergens = <Allergen>{};
 
+  // ルーレットの料理名一覧（ユーザーが編集可能）
+  final List<String> _rouletteMenus = <String>[];
+
   // ゲッター
   ThemeMode get themeMode => _themeMode;
   Locale get locale => _locale;
@@ -43,6 +48,7 @@ class AppState extends ChangeNotifier {
   bool get soundEnabled => _soundEnabled;
   String get selectedTheme => _selectedTheme;
   Set<Allergen> get selectedAllergens => _selectedAllergens;
+  List<String> get rouletteMenus => List.unmodifiable(_rouletteMenus);
 
   // テーマ変更
   void changeTheme(ThemeMode mode) {
@@ -110,6 +116,33 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  // ルーレットの料理名を追加
+  Future<void> addRouletteMenu(String name) async {
+    final trimmed = name.trim();
+    if (trimmed.isEmpty) return;
+    // 重複を避ける（大文字小文字と全角半角を簡易同一視）
+    final exists =
+        _rouletteMenus.any((m) => m.toLowerCase() == trimmed.toLowerCase());
+    if (exists) return;
+    _rouletteMenus.add(trimmed);
+    await _saveRouletteMenusToPrefs();
+    notifyListeners();
+  }
+
+  // ルーレットの料理名を削除
+  Future<void> removeRouletteMenu(String name) async {
+    _rouletteMenus.remove(name);
+    await _saveRouletteMenusToPrefs();
+    notifyListeners();
+  }
+
+  // ルーレットの料理名を全てクリア
+  Future<void> clearRouletteMenus() async {
+    _rouletteMenus.clear();
+    await _saveRouletteMenusToPrefs();
+    notifyListeners();
+  }
+
   // 設定をリセット
   void resetSettings() {
     _themeMode = ThemeMode.light;
@@ -118,6 +151,9 @@ class AppState extends ChangeNotifier {
     _soundEnabled = true;
     _selectedTheme = 'default';
     _selectedAllergens.clear();
+    _rouletteMenus
+      ..clear()
+      ..addAll(_defaultRouletteMenus);
     notifyListeners();
   }
 
@@ -136,4 +172,32 @@ class AppState extends ChangeNotifier {
       ..addAll(saved.map((name) => Allergen.values.byName(name)));
     notifyListeners();
   }
+
+  Future<void> _saveRouletteMenusToPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(_prefsKeyRouletteMenus, _rouletteMenus);
+  }
+
+  Future<void> _loadRouletteMenusFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final saved = prefs.getStringList(_prefsKeyRouletteMenus);
+    _rouletteMenus
+      ..clear()
+      ..addAll(saved == null || saved.isEmpty ? _defaultRouletteMenus : saved);
+    notifyListeners();
+  }
 }
+
+// デフォルトのルーレット料理名
+const List<String> _defaultRouletteMenus = <String>[
+  'カレーライス',
+  'ハンバーグ',
+  'オムライス',
+  'ラーメン',
+  '寿司',
+  '唐揚げ',
+  'パスタ',
+  'うどん',
+  'サラダ',
+  '焼き魚',
+];
