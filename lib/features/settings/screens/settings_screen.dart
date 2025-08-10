@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+
 import '../../../app/theme/colors.dart';
 import '../../../app/theme/text_styles.dart';
 import '../../../shared/services/app_state.dart';
@@ -21,7 +22,7 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: Consumer<AppState>(
         builder: (context, appState, child) {
-          return Container(
+          return DecoratedBox(
             decoration: const BoxDecoration(
               gradient: AppColors.rainbowGradient,
             ),
@@ -34,11 +35,6 @@ class SettingsScreen extends StatelessWidget {
                     KawaiiCard(
                       child: Column(
                         children: [
-                          const Icon(
-                            Icons.favorite,
-                            color: AppColors.primary,
-                            size: 48,
-                          ),
                           const SizedBox(height: 16),
                           Text(
                             'きょうごはん',
@@ -47,15 +43,9 @@ class SettingsScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          Text(
+                          const Text(
                             'バージョン 1.0.0',
                             style: AppTextStyles.caption,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'かわいい系のシンプルなモバイルアプリ',
-                            style: AppTextStyles.body,
-                            textAlign: TextAlign.center,
                           ),
                         ],
                       ),
