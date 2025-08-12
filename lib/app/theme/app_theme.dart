@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'colors.dart';
 import 'text_styles.dart';
 
@@ -20,7 +21,7 @@ class AppTheme {
         titleTextStyle: AppTextStyles.heading2,
       ),
       cardTheme: CardThemeData(
-        color: AppColors.surface,
+        color: AppColors.background,
         elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -51,7 +52,7 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.surface,
+        fillColor: AppColors.background,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
@@ -82,20 +83,27 @@ class AppTheme {
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: AppColors.primary,
+      colorScheme: const ColorScheme(
         brightness: Brightness.dark,
+        primary: AppColors.backgroundButton, // ボタン系の基調色
+        onPrimary: Colors.white, // ボタン上のテキスト色
+        secondary: AppColors.backgroundButton,
+        onSecondary: Colors.white,
+        error: AppColors.error,
+        onError: Colors.white, // 背景上のテキスト
+        surface: AppColors.background, // カードやフィールドの背景
+        onSurface: AppColors.background, // サーフェス上のテキスト
       ),
-      scaffoldBackgroundColor: const Color(0xFF121212),
+      scaffoldBackgroundColor: AppColors.background,
       appBarTheme: const AppBarTheme(
-        backgroundColor: Color(0xFF1E1E1E),
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.background,
+        foregroundColor: AppColors.background,
         elevation: 0,
         centerTitle: true,
         titleTextStyle: AppTextStyles.heading2,
       ),
       cardTheme: CardThemeData(
-        color: const Color(0xFF2A2A2A),
+        color: AppColors.background,
         elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -104,7 +112,7 @@ class AppTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
+          backgroundColor: AppColors.backgroundButton,
           foregroundColor: Colors.white,
           elevation: 2,
           shape: RoundedRectangleBorder(
@@ -118,7 +126,7 @@ class AppTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: AppColors.primary,
+          foregroundColor: AppColors.backgroundButton,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
@@ -126,7 +134,7 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: const Color(0xFF2A2A2A),
+        fillColor: AppColors.background,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
@@ -134,7 +142,7 @@ class AppTheme {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(
-            color: AppColors.primary,
+            color: AppColors.backgroundButton,
             width: 2,
           ),
         ),
@@ -149,6 +157,9 @@ class AppTheme {
         bodyLarge: AppTextStyles.body,
         bodyMedium: AppTextStyles.body,
         labelMedium: AppTextStyles.caption,
+      ).apply(
+        bodyColor: AppColors.background,
+        displayColor: AppColors.background,
       ),
     );
   }

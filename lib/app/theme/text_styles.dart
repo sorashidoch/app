@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'colors.dart';
 
 class AppTextStyles {
@@ -50,14 +51,14 @@ class AppTextStyles {
   static const TextStyle caption = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.normal,
-    color: AppColors.textSecondary,
+    color: AppColors.background,
     height: 1.3,
   );
 
   static const TextStyle label = TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.w500,
-    color: AppColors.textSecondary,
+    color: AppColors.background,
     letterSpacing: 0.5,
   );
 

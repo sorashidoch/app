@@ -13,12 +13,17 @@ class AppColors {
   static const Color pastelPurple = Color(0xFFE1BEE7); // 紫
 
   // 背景色・白
-  static const Color background = Color(0xFFFEFEFE); // 白（背景）
-  static const Color surface = Color(0xFFFFFFFF);   // 白（サーフェス）
+  static const Color background = Color.fromARGB(255, 255, 255, 255); // 白（背景）
+  static const Color backgroundBanner =
+      Color.fromARGB(255, 227, 253, 0); // バナー景色
+  static const Color backgroundButton =
+      Color.fromARGB(255, 255, 163, 83); // ボタン景色
+  static const Color backgroundTile =
+      Color.fromARGB(255, 255, 77, 193); // 背景色（ダーク）
 
   // テキスト色
   static const Color textPrimary = Color(0xFF2C3E50);
-  static const Color textSecondary = Color(0xFF7F8C8D);
+  static const Color textDisabled = Color(0xFF7F8C8D);
 
   // 状態色（赤・オレンジのみ残す）
   static const Color error = Color(0xFFF44336); // エラー（赤）

@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../app/theme/colors.dart';
 import '../../../app/theme/text_styles.dart';
 import '../../../shared/services/app_state.dart';
-import '../widgets/kawaii_card.dart';
+import '../../../shared/widgets/button_with_icon.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -32,12 +32,12 @@ class SettingsScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     // アプリ情報カード
-                    KawaiiCard(
+                    ButtonWithIcon(
                       child: Column(
                         children: [
                           const SizedBox(height: 16),
                           Text(
-                            'きょうごはん',
+                            'まいごはん',
                             style: AppTextStyles.heading2.copyWith(
                               color: AppColors.primary,
                             ),
@@ -54,7 +54,7 @@ class SettingsScreen extends StatelessWidget {
                     const SizedBox(height: 24),
 
                     // テーマ設定
-                    KawaiiCard(
+                    ButtonWithIcon(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -96,7 +96,7 @@ class SettingsScreen extends StatelessWidget {
                     const SizedBox(height: 24),
 
                     // 通知設定
-                    KawaiiCard(
+                    ButtonWithIcon(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -132,7 +132,7 @@ class SettingsScreen extends StatelessWidget {
                     const SizedBox(height: 24),
 
                     // その他の設定
-                    KawaiiCard(
+                    ButtonWithIcon(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -207,7 +207,7 @@ class SettingsScreen extends StatelessWidget {
         ),
         child: Icon(
           icon,
-          color: isSelected ? AppColors.primary : AppColors.textSecondary,
+          color: isSelected ? AppColors.primary : AppColors.textDisabled,
           size: 20,
         ),
       ),
@@ -253,7 +253,7 @@ class SettingsScreen extends StatelessWidget {
       ),
       trailing: const Icon(
         Icons.arrow_forward_ios,
-        color: AppColors.textSecondary,
+        color: AppColors.textDisabled,
         size: 16,
       ),
       onTap: onTap,

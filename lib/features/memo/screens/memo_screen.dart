@@ -6,7 +6,7 @@ import '../../../app/theme/colors.dart';
 import '../../../app/theme/text_styles.dart';
 import '../../../shared/models/memo_favorite.dart';
 import '../../../shared/services/app_state.dart';
-import '../widgets/kawaii_card.dart';
+import '../../../shared/widgets/button_with_icon.dart';
 
 class MemoScreen extends StatefulWidget {
   const MemoScreen({super.key});
@@ -126,7 +126,8 @@ class _MemoScreenState extends State<MemoScreen> {
                       children: [
                         // メモ追加フォーム
                         if (_isAddingMemo)
-                          KawaiiCard(
+                          ButtonWithIcon(
+                            backgroundColor: Colors.white,
                             child: Padding(
                               padding: const EdgeInsets.all(20.0),
                               child: Column(
@@ -259,7 +260,8 @@ class _MemoScreenState extends State<MemoScreen> {
                                     return Padding(
                                       padding:
                                           const EdgeInsets.only(bottom: 12),
-                                      child: KawaiiCard(
+                                      child: ButtonWithIcon(
+                                        backgroundColor: Colors.white,
                                         child: Padding(
                                           padding: const EdgeInsets.all(16),
                                           child: Column(

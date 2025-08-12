@@ -3,8 +3,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/theme/colors.dart';
 import '../../../app/theme/text_styles.dart';
+import '../../../shared/widgets/button_with_icon.dart';
 import '../widgets/feature_button.dart';
-import '../widgets/kawaii_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -102,7 +102,7 @@ class HomeScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           // ウェルカムカード
-                          KawaiiCard(
+                          ButtonWithIcon(
                             child: Padding(
                               padding: const EdgeInsets.all(20.0),
                               child: Column(

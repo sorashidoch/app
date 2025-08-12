@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../app/theme/colors.dart';
 import '../../../app/theme/text_styles.dart';
 import '../../../shared/services/app_state.dart';
-import '../../roulette/widgets/kawaii_card.dart';
+import '../../../shared/widgets/button_with_icon.dart';
 
 class RouletteScreen extends StatefulWidget {
   const RouletteScreen({super.key});
@@ -122,7 +122,7 @@ class _RouletteScreenState extends State<RouletteScreen> {
                       Center(
                         child: SizedBox(
                           width: 280,
-                          child: KawaiiCard(
+                          child: ButtonWithIcon(
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.center,

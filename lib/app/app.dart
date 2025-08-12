@@ -21,7 +21,7 @@ class SumahonoMobileApp extends StatelessWidget {
     return Consumer<AppState>(
       builder: (context, appState, child) {
         return MaterialApp.router(
-          title: 'きょうごはん',
+          title: 'まいごはん',
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: appState.themeMode,
