@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../shared/models/allergen.dart';
 import '../../../shared/models/allergen_icons.dart';
 import '../../../shared/services/app_state.dart';
+import '../../../shared/widgets/common_header.dart';
 
 /// アレルゲン設定画面：義務表示/推奨表示の選択UI + 選択中一覧（決定/戻る対応）
 class AllergyScreen extends StatefulWidget {
@@ -82,76 +83,84 @@ class _AllergyScreenState extends State<AllergyScreen> {
     final selected = _tempSelected.toList()..sort(compareByLabel);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('アレルゲン設定'),
-        actions: [
-          TextButton(
-            // ローカル選択をクリア（確定しない）
-            onPressed: () {
-              setState(() {
-                _tempSelected.clear();
-              });
-            },
-            child: const Text(
-              'クリア',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ],
-      ),
-      body: ListView(
-        children: [
-          _buildSectionHeader(context, 'アレルゲン（義務表示 8品目）'),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Wrap(
-              children:
-                  mandatory.map((a) => _buildAllergenChip(context, a)).toList(),
-            ),
-          ),
-          _buildSectionHeader(context, 'アレルゲン（推奨表示 20品目）'),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Wrap(
-              children: recommended
-                  .map((a) => _buildAllergenChip(context, a))
-                  .toList(),
-            ),
-          ),
-          _buildSectionHeader(context, '選択中のアレルゲン'),
-          if (selected.isEmpty)
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text('未選択です'),
-            )
-          else
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Wrap(
-                children: selected
-                    .map(
-                      (a) => Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 6),
-                        child: InputChip(
-                          avatar: Icon(
-                            iconForAllergen(a),
-                            size: 18,
-                          ),
-                          label: Text(allergenLabel[a] ?? a.name),
-                          onDeleted: () {
-                            setState(() {
-                              _tempSelected.remove(a);
-                            });
-                          },
-                        ),
-                      ),
-                    )
-                    .toList(),
+      body: SafeArea(
+        child: Column(
+          children: [
+            const CommonHeader(title: 'アレルゲン設定'),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 16),
+                child: TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _tempSelected.clear();
+                    });
+                  },
+                  child: const Text('クリア'),
+                ),
               ),
             ),
-          const SizedBox(height: 24),
-        ],
+            Expanded(
+              child: ListView(
+                children: [
+                  _buildSectionHeader(context, 'アレルゲン（義務表示 8品目）'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Wrap(
+                      children: mandatory
+                          .map((a) => _buildAllergenChip(context, a))
+                          .toList(),
+                    ),
+                  ),
+                  _buildSectionHeader(context, 'アレルゲン（推奨表示 20品目）'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Wrap(
+                      children: recommended
+                          .map((a) => _buildAllergenChip(context, a))
+                          .toList(),
+                    ),
+                  ),
+                  _buildSectionHeader(context, '選択中のアレルゲン'),
+                  if (selected.isEmpty)
+                    const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Text('未選択です'),
+                    )
+                  else
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Wrap(
+                        children: selected
+                            .map(
+                              (a) => Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 6),
+                                child: InputChip(
+                                  avatar: Icon(
+                                    iconForAllergen(a),
+                                    size: 18,
+                                  ),
+                                  label: Text(allergenLabel[a] ?? a.name),
+                                  onDeleted: () {
+                                    setState(() {
+                                      _tempSelected.remove(a);
+                                    });
+                                  },
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  const SizedBox(height: 24),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
       // 下部の操作ボタン（戻る / 決定）
       bottomNavigationBar: SafeArea(

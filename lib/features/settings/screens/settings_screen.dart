@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../app/theme/colors.dart';
 import '../../../app/theme/text_styles.dart';
 import '../../../shared/services/app_state.dart';
 import '../../../shared/widgets/button_with_icon.dart';
+import '../../../shared/widgets/common_header.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -13,13 +13,6 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('設定'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/'),
-        ),
-      ),
       body: Consumer<AppState>(
         builder: (context, appState, child) {
           return DecoratedBox(
@@ -31,6 +24,7 @@ class SettingsScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
+                    const CommonHeader(title: '設定'),
                     // アプリ情報カード
                     ButtonWithIcon(
                       child: Column(

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../shared/services/app_state.dart';
+import '../../../shared/widgets/common_header.dart';
 
 /// 料理名の設定画面：追加・一覧・削除（完了/戻る対応）
 class FoodScreen extends StatefulWidget {
@@ -66,64 +67,72 @@ class _FoodScreenState extends State<FoodScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('料理名の設定'),
-      ),
-      body: ListView(
-        children: [
-          _buildSectionHeader('ルーレットの料理名'),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _menuController,
-                    maxLength: 20, // 最大20文字
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(20), // 入力自体を20文字に制限
-                    ],
-                    decoration: const InputDecoration(
-                      hintText: '例：ラーメン',
-                      labelText: '料理名を追加',
-                      border: OutlineInputBorder(),
+      body: SafeArea(
+        child: Column(
+          children: [
+            const CommonHeader(title: '料理名の設定'),
+            Expanded(
+              child: ListView(
+                children: [
+                  _buildSectionHeader('ルーレットの料理名'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _menuController,
+                            maxLength: 20, // 最大20文字
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(
+                                  20), // 入力自体を20文字に制限
+                            ],
+                            decoration: const InputDecoration(
+                              hintText: '例：ラーメン',
+                              labelText: '料理名を追加',
+                              border: OutlineInputBorder(),
+                            ),
+                            onSubmitted: _addMenu,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        ElevatedButton(
+                          onPressed: () => _addMenu(_menuController.text),
+                          child: const Text('追加'),
+                        ),
+                      ],
                     ),
-                    onSubmitted: _addMenu,
                   ),
-                ),
-                const SizedBox(width: 8),
-                ElevatedButton(
-                  onPressed: () => _addMenu(_menuController.text),
-                  child: const Text('追加'),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Wrap(
-              children: _tempMenus
-                  .map(
-                    (m) => Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 6),
-                      child: InputChip(
-                        label: Text(m),
-                        onDeleted: () => _removeMenu(m),
-                      ),
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Wrap(
+                      children: _tempMenus
+                          .map(
+                            (m) => Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 6, vertical: 6),
+                              child: InputChip(
+                                label: Text(m),
+                                onDeleted: () => _removeMenu(m),
+                              ),
+                            ),
+                          )
+                          .toList(),
                     ),
-                  )
-                  .toList(),
+                  ),
+                  if (_tempMenus.isEmpty)
+                    const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Text('料理名が未登録です'),
+                    ),
+                  const SizedBox(height: 24),
+                ],
+              ),
             ),
-          ),
-          if (_tempMenus.isEmpty)
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text('料理名が未登録です'),
-            ),
-          const SizedBox(height: 24),
-        ],
+          ],
+        ),
       ),
       // 下部の操作ボタン（戻る / 完了）
       bottomNavigationBar: SafeArea(

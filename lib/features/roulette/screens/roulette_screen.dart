@@ -8,6 +8,7 @@ import '../../../app/theme/colors.dart';
 import '../../../app/theme/text_styles.dart';
 import '../../../shared/services/app_state.dart';
 import '../../../shared/widgets/button_with_icon.dart';
+import '../../../shared/widgets/common_header.dart';
 
 class RouletteScreen extends StatefulWidget {
   const RouletteScreen({super.key});
@@ -71,22 +72,6 @@ class _RouletteScreenState extends State<RouletteScreen> {
     final history = appState.rouletteHistory;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('今日のご飯ルーレット'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/'),
-        ),
-        actions: [
-          IconButton(
-            tooltip: '料理名を変更',
-            icon: const Icon(Icons.tune),
-            onPressed: () {
-              context.go('/profile/food', extra: '/roulette');
-            },
-          ),
-        ],
-      ),
       body: DecoratedBox(
         decoration: const BoxDecoration(
           gradient: AppColors.sunsetGradient,
@@ -102,6 +87,24 @@ class _RouletteScreenState extends State<RouletteScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      // 共通ヘッダー
+                      const CommonHeader(title: 'ルーレット'),
+                      // ヘッダー直下に「料理名を変更」ボタンを配置
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton.icon(
+                          onPressed: () {
+                            // 料理名設定画面へ。戻り先にルーレットを指定
+                            context.go('/profile/food', extra: '/roulette');
+                          },
+                          icon: const Icon(Icons.tune,
+                              color: AppColors.textPrimary),
+                          label: const Text(
+                            '料理名を変更',
+                            style: AppTextStyles.body,
+                          ),
+                        ),
+                      ),
                       // オプション：連続同一結果回避
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -136,6 +139,8 @@ class _RouletteScreenState extends State<RouletteScreen> {
                                 Text(
                                   selectedMenu ?? '今日のご飯は？',
                                   textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                   style: AppTextStyles.kawaiiLarge.copyWith(
                                     color: AppColors.primary,
                                   ),

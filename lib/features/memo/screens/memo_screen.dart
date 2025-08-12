@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../app/theme/colors.dart';
@@ -7,6 +6,7 @@ import '../../../app/theme/text_styles.dart';
 import '../../../shared/models/memo_favorite.dart';
 import '../../../shared/services/app_state.dart';
 import '../../../shared/widgets/button_with_icon.dart';
+import '../../../shared/widgets/common_header.dart';
 
 class MemoScreen extends StatefulWidget {
   const MemoScreen({super.key});
@@ -62,52 +62,8 @@ class _MemoScreenState extends State<MemoScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              // ヘッダー部分
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                  children: [
-                    // 戻るボタン
-                    IconButton(
-                      onPressed: () => context.go('/'),
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                        size: 28,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    // タイトル
-                    Text(
-                      'メモ帳',
-                      style: AppTextStyles.kawaiiLarge.copyWith(
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black.withOpacity(0.2),
-                            offset: const Offset(0, 2),
-                            blurRadius: 4,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Spacer(),
-                    // メモ追加ボタン
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _isAddingMemo = true;
-                        });
-                      },
-                      icon: const Icon(
-                        Icons.add,
-                        color: Colors.white,
-                        size: 28,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // 共通ヘッダー
+              const CommonHeader(title: 'メモ帳'),
 
               // メインコンテンツ
               Expanded(
@@ -124,6 +80,20 @@ class _MemoScreenState extends State<MemoScreen> {
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
                       children: [
+                        // メモ追加ボタン（リスト領域の上部に配置）
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              setState(() {
+                                _isAddingMemo = true;
+                              });
+                            },
+                            icon: const Icon(Icons.add),
+                            label: const Text('メモを追加'),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
                         // メモ追加フォーム
                         if (_isAddingMemo)
                           ButtonWithIcon(

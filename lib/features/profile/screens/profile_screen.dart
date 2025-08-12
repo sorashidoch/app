@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../shared/models/allergen.dart';
 import '../../../shared/models/allergen_icons.dart';
 import '../../../shared/services/app_state.dart';
+import '../../../shared/widgets/common_header.dart';
 
 /// プロフィール画面：選択中アレルゲン表示 + ルーレット料理名一覧（変更ボタン）
 class ProfileScreen extends StatelessWidget {
@@ -29,92 +30,100 @@ class ProfileScreen extends StatelessWidget {
     final selected = appState.selectedAllergens.toList()..sort(compareByLabel);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('プロフィール'),
-      ),
-      body: ListView(
-        children: [
-          // 選択中アレルゲンの表示と遷移ボタン
-          buildSectionHeader('選択中のアレルゲン'),
-          if (selected.isEmpty)
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text('未選択です'),
-            )
-          else
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Wrap(
-                children: selected
-                    .map(
-                      (a) => Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 6),
-                        child: InputChip(
-                          avatar: Icon(
-                            iconForAllergen(a),
-                            size: 18,
-                          ),
-                          label: Text(allergenLabel[a] ?? a.name),
-                        ),
-                      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            const CommonHeader(title: 'プロフィール'),
+            Expanded(
+              child: ListView(
+                children: [
+                  // 選択中アレルゲンの表示と遷移ボタン
+                  buildSectionHeader('選択中のアレルゲン'),
+                  if (selected.isEmpty)
+                    const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Text('未選択です'),
                     )
-                    .toList(),
-              ),
-            ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: OutlinedButton.icon(
-                icon: const Icon(Icons.tune),
-                label: const Text('変更する（アレルゲン）'),
-                onPressed: () {
-                  context.go('/profile/allergy');
-                },
-              ),
-            ),
-          ),
-
-          // ルーレットの料理名（一覧と変更ボタンのみ）
-          buildSectionHeader('ルーレットの料理名'),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Wrap(
-              children: appState.rouletteMenus
-                  .map(
-                    (m) => Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 6),
-                      child: InputChip(
-                        label: Text(m),
+                  else
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Wrap(
+                        children: selected
+                            .map(
+                              (a) => Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 6),
+                                child: InputChip(
+                                  avatar: Icon(
+                                    iconForAllergen(a),
+                                    size: 18,
+                                  ),
+                                  label: Text(allergenLabel[a] ?? a.name),
+                                ),
+                              ),
+                            )
+                            .toList(),
                       ),
                     ),
-                  )
-                  .toList(),
-            ),
-          ),
-          if (appState.rouletteMenus.isEmpty)
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text('料理名が未登録です'),
-            ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: OutlinedButton.icon(
-                icon: const Icon(Icons.tune),
-                label: const Text('変更する（料理名）'),
-                onPressed: () {
-                  context.go('/profile/food');
-                },
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: OutlinedButton.icon(
+                        icon: const Icon(Icons.tune),
+                        label: const Text('変更する（アレルゲン）'),
+                        onPressed: () {
+                          context.go('/profile/allergy');
+                        },
+                      ),
+                    ),
+                  ),
+
+                  // ルーレットの料理名（一覧と変更ボタンのみ）
+                  buildSectionHeader('ルーレットの料理名'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Wrap(
+                      children: appState.rouletteMenus
+                          .map(
+                            (m) => Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 6, vertical: 6),
+                              child: InputChip(
+                                label: Text(m),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                  if (appState.rouletteMenus.isEmpty)
+                    const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Text('料理名が未登録です'),
+                    ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: OutlinedButton.icon(
+                        icon: const Icon(Icons.tune),
+                        label: const Text('変更する（料理名）'),
+                        onPressed: () {
+                          context.go('/profile/food');
+                        },
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+                ],
               ),
             ),
-          ),
-
-          const SizedBox(height: 24),
-        ],
+          ],
+        ),
       ),
       // 下部の操作ボタン（ホームへ戻る / 設定完了）
       bottomNavigationBar: SafeArea(
