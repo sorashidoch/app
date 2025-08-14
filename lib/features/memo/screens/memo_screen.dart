@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../app/theme/colors.dart';
 import '../../../app/theme/text_styles.dart';
@@ -281,9 +283,52 @@ class _MemoScreenState extends State<MemoScreen> {
                                                 ],
                                               ),
                                               const SizedBox(height: 8),
-                                              Text(
-                                                memo.content,
+                                              // 内容のURLを自動検出してタップで外部ブラウザを起動する
+                                              SelectableLinkify(
+                                                text: memo.content,
                                                 style: AppTextStyles.body,
+                                                options: const LinkifyOptions(
+                                                  humanize: true,
+                                                  looseUrl: true,
+                                                ),
+                                                onOpen: (link) async {
+                                                  // http/https がない場合は https を補完して起動する
+                                                  var url = link.url;
+                                                  if (!url.startsWith(
+                                                          'http://') &&
+                                                      !url.startsWith(
+                                                          'https://')) {
+                                                    url = 'https://$url';
+                                                  }
+                                                  final uri = Uri.parse(url);
+                                                  if (await canLaunchUrl(uri)) {
+                                                    final success =
+                                                        await launchUrl(
+                                                      uri,
+                                                      mode: LaunchMode
+                                                          .externalApplication,
+                                                    );
+                                                    if (!success && mounted) {
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          content: Text(
+                                                              'URLを開けませんでした'),
+                                                        ),
+                                                      );
+                                                    }
+                                                  } else if (mounted) {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      const SnackBar(
+                                                        content: Text(
+                                                            'URLを開けませんでした'),
+                                                      ),
+                                                    );
+                                                  }
+                                                },
                                               ),
                                               const SizedBox(height: 8),
                                               Text(
