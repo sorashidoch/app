@@ -14,8 +14,7 @@ class AppColors {
 
   // 背景色
   static const Color background = Color.fromARGB(255, 255, 255, 255); // 白（背景）
-  static const Color backgroundBanner =
-      Color.fromARGB(255, 227, 253, 0); // バナー背景
+  static const Color backgroundBanner = Color(0xFFE3F2FD); // バナー背景（薄い青：Blue 50）
   static const Color backgroundButton =
       Color.fromARGB(255, 255, 163, 83); // ボタン背景
   static const Color backgroundTile =

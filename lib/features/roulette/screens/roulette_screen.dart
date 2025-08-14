@@ -9,6 +9,7 @@ import '../../../app/theme/text_styles.dart';
 import '../../../shared/services/app_state.dart';
 import '../../../shared/widgets/button_with_icon.dart';
 import '../../../shared/widgets/common_header.dart';
+import '../../../shared/widgets/ad_banner.dart';
 
 class RouletteScreen extends StatefulWidget {
   const RouletteScreen({super.key});
@@ -234,6 +235,10 @@ class _RouletteScreenState extends State<RouletteScreen> {
                               .toList(),
                         ),
                       ],
+
+                      const SizedBox(height: 16),
+                      // バナー広告
+                      const Center(child: AdBanner()),
                     ],
                   ),
                 ),

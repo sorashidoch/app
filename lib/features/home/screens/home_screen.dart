@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/theme/colors.dart';
 import '../../../app/theme/text_styles.dart';
+import '../../../shared/widgets/ad_banner.dart';
 import '../../../shared/widgets/button_with_icon.dart';
 import '../widgets/feature_button.dart';
 
@@ -163,6 +164,15 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                ),
+              ),
+
+              // 画面下部のバナー広告
+              const SafeArea(
+                top: false,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 8),
+                  child: Center(child: AdBanner()),
                 ),
               ),
             ],
