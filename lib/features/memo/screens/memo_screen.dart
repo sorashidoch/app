@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../app/theme/colors.dart';
@@ -22,6 +23,13 @@ class _MemoScreenState extends State<MemoScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
   bool _isAddingMemo = false;
+  static const String _prefsKeyMemos = 'memos';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMemosFromPrefs();
+  }
 
   @override
   void dispose() {
@@ -30,7 +38,7 @@ class _MemoScreenState extends State<MemoScreen> {
     super.dispose();
   }
 
-  void _addMemo() {
+  Future<void> _addMemo() async {
     if (_titleController.text.isNotEmpty &&
         _contentController.text.isNotEmpty) {
       setState(() {
@@ -43,12 +51,38 @@ class _MemoScreenState extends State<MemoScreen> {
         _contentController.clear();
         _isAddingMemo = false;
       });
+      // 永続化（完了を待ってから戻る動線でも確実に保存）
+      await _saveMemosToPrefs();
     }
   }
 
-  void _deleteMemo(int index) {
+  Future<void> _deleteMemo(int index) async {
     setState(() {
       _memos.removeAt(index);
+    });
+    // 永続化（削除も確実に保存）
+    await _saveMemosToPrefs();
+  }
+
+  Future<void> _saveMemosToPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final data =
+        _memos.map((m) => m.toPersistedString()).toList(growable: false);
+    await prefs.setStringList(_prefsKeyMemos, data);
+  }
+
+  Future<void> _loadMemosFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final saved = prefs.getStringList(_prefsKeyMemos) ?? <String>[];
+    final loaded = saved
+        .map((s) => MemoItem.fromPersistedString(s))
+        .whereType<MemoItem>()
+        .toList(growable: false);
+    if (!mounted) return;
+    setState(() {
+      _memos
+        ..clear()
+        ..addAll(loaded);
     });
   }
 
@@ -368,4 +402,16 @@ class MemoItem {
   final String title;
   final String content;
   final DateTime timestamp;
+
+  // 端末保存用の簡易シリアライズ: title\u0001content\u0001iso8601
+  String toPersistedString() =>
+      '$title\u0001$content\u0001${timestamp.toIso8601String()}';
+
+  static MemoItem? fromPersistedString(String value) {
+    final parts = value.split('\u0001');
+    if (parts.length != 3) return null;
+    final dt = DateTime.tryParse(parts[2]);
+    if (dt == null) return null;
+    return MemoItem(title: parts[0], content: parts[1], timestamp: dt);
+  }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../app/theme/text_styles.dart';
 import '../../../shared/services/app_state.dart';
@@ -47,10 +49,41 @@ class HistoryScreen extends StatelessWidget {
                     child: ListTile(
                       leading: const Icon(Icons.star, color: Colors.amber),
                       title: Text(m.title, style: AppTextStyles.body),
+                      isThreeLine: true,
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(m.content, style: AppTextStyles.caption),
+                          // メモ内容を複数行表示し、URLは自動リンク化して外部ブラウザで開く
+                          Container(
+                            constraints: const BoxConstraints(maxHeight: 40),
+                            child: SelectableLinkify(
+                              text: m.content,
+                              style: AppTextStyles.caption.copyWith(
+                                color: Colors.black87,
+                              ),
+                              options: const LinkifyOptions(
+                                humanize: true,
+                                looseUrl: true,
+                              ),
+                              onOpen: (link) async {
+                                var url = link.url;
+                                if (!url.startsWith('http://') &&
+                                    !url.startsWith('https://')) {
+                                  url = 'https://$url';
+                                }
+                                final uri = Uri.parse(url);
+                                if (await canLaunchUrl(uri)) {
+                                  final success = await launchUrl(
+                                    uri,
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                  if (!success) {
+                                    // ここではScaffoldMessengerが使いづらいので静かに失敗
+                                  }
+                                }
+                              },
+                            ),
+                          ),
                           const SizedBox(height: 4),
                           Text(
                             '作成: ${_formatDateTime(m.memoDateTime)}',

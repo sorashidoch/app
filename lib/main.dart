@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart' as gma;
 import 'package:provider/provider.dart';
@@ -10,7 +11,11 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Google Mobile Adsを初期化（バナー広告等の利用準備）
-  gma.MobileAds.instance.initialize();
+  // デスクトップ/WEBでは未対応のためモバイルのみ初期化
+  if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.android ||
+      defaultTargetPlatform == TargetPlatform.iOS)) {
+    gma.MobileAds.instance.initialize();
+  }
 
   runApp(
     ChangeNotifierProvider(
